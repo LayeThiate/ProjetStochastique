@@ -1,6 +1,8 @@
 package Controller;
 
 import java.util.List;
+
+import Model.Scenario;
 import Model.Trajet;
 
 public class RecuitGlobal {
@@ -15,17 +17,19 @@ public class RecuitGlobal {
     public ApproxGenerique approxGenerique;
 
     public void resoudreFonctObectif() {
+    	//boucle sur les différents recuits pour trouver une solution
     }
 
     public int calculCout() {
-        // TODO Auto-generated return
+        // TODO Auto-generated return 
         return 0;
     }
 
-    public void foncDecroissante() {
+    public float foncDecroissante() {
+    	return 0.0f;
     }
 
-    public boolean estAcceptee() {
+    public boolean estAcceptee1() {
         // TODO Auto-generated return
         return false;
     }

@@ -2,7 +2,8 @@ package Controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import Model.Trajet;
+
+import Model.*;
 
 public class FonctionObjectif {
     public int meilleureSolution;
@@ -12,5 +13,8 @@ public class FonctionObjectif {
     public String[] coefficients;
 
     public List<Trajet> listTrajet = new ArrayList<Trajet> ();
-
+    
+    public float getValue(Scenario scenario) {
+    	return 0.0f;
+    }
 }
