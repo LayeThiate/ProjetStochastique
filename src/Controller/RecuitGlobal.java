@@ -18,11 +18,16 @@ public class RecuitGlobal {
 
     public void resoudreFonctObectif() {
     	//boucle sur les différents recuits pour trouver une solution
+    	
     }
 
-    public int calculCout() {
+    public int calculCout(Scenario minScenario) {
         // TODO Auto-generated return 
-        return 0;
+    	int rslt = 0;
+    	for(int i = 0; i < this.fonctionObjectif.coefficients.length; i++) {
+    		rslt += Float.parseFloat(this.fonctionObjectif.coefficients[i]) * this.fonctionObjectif.parametre[i];
+    	}
+        return rslt;
     }
 
     public float foncDecroissante() {
@@ -34,7 +39,7 @@ public class RecuitGlobal {
         return false;
     }
 
-    public List<Trajet> calculVoisin() {
+    public Scenario calculVoisin() {
         // TODO Auto-generated return
         return null;
     }
