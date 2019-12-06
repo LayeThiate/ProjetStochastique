@@ -102,6 +102,7 @@ public class UIControlleur {
 		btnSolveDeterm.setToggleGroup(toggleGroup);
 		btnSolveDeterm.setSelected(true); //on met sur résolution déterministe par défaut
 		btnSolveStocha.setToggleGroup(toggleGroup);
+		choixResolution = "deterministe";
 
 		btnSolveDeterm.setOnAction((event)-> {
 			choixResolution = "deterministe";
@@ -119,11 +120,12 @@ public class UIControlleur {
 				//envoi vers le recuit global
 				//TODO
 				
-				// test d'affichage pour voir qu'on a bien tout récupéré
-				displayAllData();
+				//test d'affichage pour voir qu'on a bien tout récupéré
+				//displayAllData();
 			}
 			//sinon on ne fait rien, pour ne pas créer d'erreurs dans le programme
-
+			//A appeler après chaque clic sur le bouton de résolution
+			cleanseArrays();
          });
 	} 
 	
@@ -137,8 +139,9 @@ public class UIControlleur {
 	}
 	
 	public boolean getFonctionObjectif(){
-		if(textFieldFctObj.getText().isEmpty()){
+		if(!textFieldFctObj.getText().isEmpty()){
 			fonctionObjectif = textFieldFctObj.getText();
+			//System.out.println("getFonctionObjectif OK");
 			return true;
 		}
 		else
@@ -149,6 +152,7 @@ public class UIControlleur {
 		if(!textAreaSubConstraints.getText().isEmpty()){
 			for(String line : textAreaSubConstraints.getText().split("\\n")) 
 				arrayListSubConstraints.add(line);
+			//System.out.println("getSubConstraints OK");
 			return true;
 		}
 		else 
@@ -157,8 +161,9 @@ public class UIControlleur {
 	
 	public boolean getBoundaries(){
 		if(!textAreaBoundaries.getText().isEmpty()){
-			for(String line : textAreaSubConstraints.getText().split("\\n")) 
+			for(String line : textAreaBoundaries.getText().split("\\n")) 
 				arrayListBoundaries.add(line);
+			//System.out.println("getBoundaries OK");
 			return true;
 		}
 		else 
@@ -167,8 +172,9 @@ public class UIControlleur {
 	
 	public boolean getAllVariables(){
 		if(!textAreaVariables.getText().isEmpty()){
-			for(String line : textAreaSubConstraints.getText().split("\\n")) 
+			for(String line : textAreaVariables.getText().split("\\n")) 
 				arrayListVariables.add(line);
+			//System.out.println("getAllVariables OK");
 			return true;
 		}
 		else 
@@ -178,7 +184,9 @@ public class UIControlleur {
 	public boolean getSliderTime(){
 		double timeMinutes = sliderTimeMinutes.getValue();
 		if(timeMinutes >= 1.0){
-			minutesSliderTime = Double.toString(timeMinutes);
+			int minutesEntieres = (int) timeMinutes;
+			minutesSliderTime = Integer.toString(minutesEntieres);
+			//System.out.println("getSliderTime OK");
 			return true;
 		}
 		else
@@ -188,6 +196,7 @@ public class UIControlleur {
 	public boolean getFileNameCSV(){
 		if(!fileNameCSV.getText().isEmpty()){
 			strFileNameCSV = fileNameCSV.getText();
+			//System.out.println("getFileNameCSV OK");
 			return true;
 		}
 		else 
@@ -196,9 +205,10 @@ public class UIControlleur {
 	
 	public void displayAllData(){
 		System.out.println("Choix: " + choixResolution);
+		System.out.println("SliderTime: " + minutesSliderTime);
 		System.out.println("Nom csv: " + strFileNameCSV);
 		System.out.println("Fonction Objectif: " + fonctionObjectif);
-		System.out.println("SubConstrainst:");
+		System.out.println("SubConstraints:");
 		for(String s : arrayListSubConstraints)
 			System.out.println(s);
 		System.out.println("Bounds:");
@@ -208,7 +218,12 @@ public class UIControlleur {
 		for(String s : arrayListVariables)
 			System.out.println(s);
 	}
-
 	
+	//fonction à appeler après chaque clic du bouton de résolution
+	public void cleanseArrays(){
+		arrayListSubConstraints.clear();
+		arrayListBoundaries.clear();
+		arrayListVariables.clear();
+	}
 
 }
