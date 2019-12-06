@@ -13,6 +13,11 @@ import com.opencsv.CSVReaderBuilder;
 
 import ilog.concert.IloException;
 
+
+/**
+ * Sigleton class contening the data of parameters
+ *
+ */
 public class Data {
 	private int numStation;
 	private int numScenario;
@@ -51,10 +56,25 @@ public class Data {
 		return instance;
 	}
 	
+	/**
+	 * Init the data whith the csv file
+	 * 
+	 * @param file
+	 * @throws Exception
+	 */
 	public static void init(String file) throws Exception {
         fillData(Data.getInstance(), file);
     }
 	
+	
+	/**
+	 * Fill the elements of data
+	 * put each element whith it value corresponding
+	 * 
+	 * @param data
+	 * @param file
+	 * @throws Exception
+	 */
 	private static void fillData(Data data, String file) throws Exception {
 		List<String[]> list = parseCSV(file);
 		
@@ -65,6 +85,13 @@ public class Data {
 		}
 	}
 	
+	/**
+	 * parse the csv file and return list of string table whose each element represents a line 
+	 * 
+	 * @param pathFile
+	 * @return
+	 * @throws Exception
+	 */
 	public static List<String[]> parseCSV(String pathFile) throws Exception {
 		System.out.println(pathFile);
 		Reader reader = new FileReader(pathFile);
@@ -77,7 +104,7 @@ public class Data {
 	    	    .build();
 	    	 
 	    	CSVReader csvReader = new CSVReaderBuilder(reader)
-	    	    .withSkipLines(1)
+	    	    .withSkipLines(1) // ignore the first line, header
 	    	    .withCSVParser(parser)
 	    	    .build();
 	    	
