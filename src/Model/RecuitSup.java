@@ -3,17 +3,21 @@ package Model;
 import java.util.ArrayList;
 import java.util.List;
 
-import Controller.RecuitStochastique;
+import Controller.*;
 
 public class RecuitSup {
     public int taille;
+    
+    public ApproxGenerique approxGenerique;
 
     public List<Scenario> listScenario = new ArrayList<Scenario> ();
     
     public List<Integer> listSolution = new ArrayList<Integer>();
+    
+    public FonctionObjectif fonctionObjectif;
 
     public void resolution() {
-        // TODO Auto-generated return
+    	//recuit 
     	List<RecuitStochastique> listRecuit = new ArrayList<RecuitStochastique>();
     	for(int i = 0 ; i < taille; i++) {
     		listRecuit.get(i).resoudreFoncObjectif(listScenario.get(i));
@@ -22,11 +26,17 @@ public class RecuitSup {
     }
 
     public void genererScenario() {
-    	
+    	//parser les données entrées par l'utilisateur et créer les objets
     }
 
-    public void getSolution() {
-    	
+    public int getSolution() {
+    	int meilleureSolution = listSolution.get(0);
+    	for(int i = 1 ; i < taille; i++) {
+    		if(fonctionObjectif.betterSolution(meilleureSolution, listSolution.get(i))) {
+    			meilleureSolution = listSolution.get(i);
+    		}
+    	}
+    	return meilleureSolution;
     }
 
     public float getMoyenne() {
