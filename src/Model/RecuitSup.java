@@ -36,7 +36,25 @@ public class RecuitSup {
     	for(int i = 0; i < numScenario; i++) {
     		Scenario scenario = listScenario.get(i);
     		for(int j = 0; j < numStation; j++) {
-    			
+    			Station station = new Station();
+    			station.id = data.getId()[j];
+    			station.capaMax = (int) data.getK()[j];
+    			station.coutAjout = data.getC()[j];
+    			station.coutManque = data.getV()[j];
+    			station.coutTempsPerdu = data.getW()[j];
+    			station.disponible = data.getDisponible()[j];
+    			station.nbPlaceDispo = data.getNbPlaceDispo()[j];
+    			station.latitude = data.getLatitude()[j];
+    			station.longitude = data.getLongitude()[j];
+    			scenario.listStation.add(station);
+    		}
+    		for(int j = 0; j < numStation; j++) {
+    			for(int k = 0  ; k< numStation; k++) {
+    				Trajet trajet = new Trajet();
+    				trajet.depart = scenario.listStation.get(j);
+    				trajet.arrivee = scenario.listStation.get(k);
+    				trajet.demande = (int) data.getEps()[j][k][i];
+    			}
     		}
     	}
     }
