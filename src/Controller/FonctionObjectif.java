@@ -24,7 +24,7 @@ public class FonctionObjectif {
     	return 0.0f;
     }
     
-    public boolean betterSolution(int champion, int contestant) {
+    public boolean betterSolution(double champion, double contestant) {
     	boolean rslt = (objectif == "maximize") ? champion <= contestant: champion >= contestant;
     	return rslt;
     }

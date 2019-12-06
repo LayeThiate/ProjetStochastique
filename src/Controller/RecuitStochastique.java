@@ -12,15 +12,17 @@ public class RecuitStochastique extends RecuitGlobal {
     	int k = 0;
     	int kmax = 10;
     	float p = 0.0f;
-    	float newCout = 0.0f;
+    	double newCout = 0.0f;
+    	boolean acceptedSolution = false;
     	Scenario minScenario = scenario;
-    	float cout = scenario.cout();
+    	double cout = scenario.cout();
     	//boucle du recuit
     	//while(!endCondition) {    		//condition sur la temperature
     		while(k<kmax){        		//iteration maximale du recuit pris a n**2 habituellement
-        		int coutVoisin = scenario.voisinage(); //voisin du scenario et cout de mis en place
+        		double coutVoisin = scenario.voisinage(); //voisin du scenario et cout de mis en place
         		newCout = scenario.cout() + coutVoisin; //calcul du cout pour nouveau scenario 
     													//avec cout de mise en place
+        		
         		if(newCout < cout) {
         			//scenario donne plus petit cout
         			minScenario = scenario;   

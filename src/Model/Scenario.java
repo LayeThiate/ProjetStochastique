@@ -22,8 +22,8 @@ public class Scenario {
     	
     }
 
-    public int cout() {
-    	int rslt = 0;
+    public double cout() {
+    	double rslt = 0.0;
     	Station depart, arrivee;
     	for(int i = 0; i < listTrajet.size(); i++) {//cout lie aux trajets
     		//extraction des données
@@ -46,12 +46,12 @@ public class Scenario {
         return rslt;
     }
 
-    public int coutStocha() {
+    public double coutStocha() {
         // TODO Auto-generated return
         return 0;
     }
 
-    public int voisinage() {
+    public double voisinage() {
         // TODO Auto-generated return
     	//selection de la méthode de selection du voisin
     	int modifType = (int) Math.random()/3 + 1;
@@ -63,11 +63,11 @@ public class Scenario {
     		case TRANSFER_CYCLE:
     			return this.transferCycle();
     		default:
-    			return 0;
+    			return 0.0;
     	}
     }
     
-    private int addCycle() {
+    private double addCycle() {
     	Station changeLoc;
     	int repNum = 0;
     	while(repNum < listStation.size()) {
@@ -80,16 +80,16 @@ public class Scenario {
         	else
         		repNum++; // compter le nombre d'essai
     	}
-    	return 0;	
+    	return 0.0;	
     }
     
-    private int removeCycle() {
+    private double removeCycle() {
     	Station changeLoc = listStation.get((int) Math.random() / (listStation.size()));
     	changeLoc.nbVeloInitial--;
     	return 0; //aucun cout pour la suppression d'un velo
     }
     
-    private int transferCycle() {
+    private double transferCycle() {
     	Station removeLoc = listStation.get((int) Math.random() / (listStation.size()));
     	Station addLoc;
     	int repNum = 0;
@@ -104,7 +104,7 @@ public class Scenario {
         	else
         		repNum++; // compter le nombre d'essai
     	}
-    	return 0;
+    	return 0.0;
     }
     
     

@@ -15,6 +15,8 @@ public class RecuitSup {
     public List<Integer> listSolution = new ArrayList<Integer>();
     
     public FonctionObjectif fonctionObjectif;
+    
+    public Data data;
 
     public void resolution() {
     	//recuit 
@@ -25,12 +27,22 @@ public class RecuitSup {
     	}
     }
 
-    public void genererScenario() {
+    public void genererScenario() throws Exception {
     	//parser les données entrées par l'utilisateur et créer les objets
+    	String pathFile = " ";
+    	data.parseCSV(pathFile);
+    	int numScenario = data.getNumScenario();
+    	int numStation = data.getNumStation();
+    	for(int i = 0; i < numScenario; i++) {
+    		Scenario scenario = listScenario.get(i);
+    		for(int j = 0; j < numStation; j++) {
+    			
+    		}
+    	}
     }
 
-    public int getSolution() {
-    	int meilleureSolution = listSolution.get(0);
+    public double getSolution() {
+    	double meilleureSolution = listSolution.get(0);
     	for(int i = 1 ; i < taille; i++) {
     		if(fonctionObjectif.betterSolution(meilleureSolution, listSolution.get(i))) {
     			meilleureSolution = listSolution.get(i);

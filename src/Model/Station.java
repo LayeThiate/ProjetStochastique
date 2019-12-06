@@ -9,11 +9,11 @@ public class Station {
 	public int disponible;
 	public int nbPlaceDispo;
 	public int nbVeloInitial;
-	public int coutAjout;
-	public int coutManque;
-	public int coutTempsPerdu;
-	public float latitude;
-	public float longitude;
+	public double coutAjout;
+	public double coutManque;
+	public double coutTempsPerdu;
+	public double latitude;
+	public double longitude;
 	
 	
 	public Station() {
@@ -93,7 +93,7 @@ public class Station {
 		this.nbVeloInitial = nbVeloInitial;
 	}
 
-	public int getCoutAjout() {
+	public double getCoutAjout() {
 		return coutAjout;
 	}
 
@@ -101,7 +101,7 @@ public class Station {
 		this.coutAjout = coutAjout;
 	}
 
-	public int getCoutManque() {
+	public double getCoutManque() {
 		return coutManque;
 	}
 
@@ -109,7 +109,7 @@ public class Station {
 		this.coutManque = coutManque;
 	}
 
-	public int getCoutTempsPerdu() {
+	public double getCoutTempsPerdu() {
 		return coutTempsPerdu;
 	}
 
@@ -117,7 +117,7 @@ public class Station {
 		this.coutTempsPerdu = coutTempsPerdu;
 	}
 
-	public float getLatitude() {
+	public double getLatitude() {
 		return latitude;
 	}
 
@@ -125,7 +125,7 @@ public class Station {
 		this.latitude = latitude;
 	}
 
-	public float getLongitude() {
+	public double getLongitude() {
 		return longitude;
 	}
 
