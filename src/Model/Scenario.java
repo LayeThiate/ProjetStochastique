@@ -25,21 +25,41 @@ public class Scenario {
     public double cout() {
     	double rslt = 0.0;
     	Station depart, arrivee;
+    	int demande;
     	for(int i = 0; i < listTrajet.size(); i++) {//cout lie aux trajets
     		//extraction des données
     		depart = listTrajet.get(i).depart;
     		arrivee = listTrajet.get(i).arrivee;
+    		demande = listTrajet.get(i).demande;
     		//vérification de la disponiibilite
-    		if(depart.disponible == 0) //pas de velo disponible
-    			rslt += depart.coutManque;
-			else {//velo disponible
-				depart.disponible -= 1;//un velo en moins disponible
-				depart.nbPlaceDispo += 1;
-				if(arrivee.nbPlaceDispo == 0) //pas de place pour deposer le velo
-					rslt += arrivee.coutTempsPerdu;
+    		if(depart.disponible <= demande) { //pas assez de velo disponible
+    			int veloParti = (demande - depart.disponible);
+    			rslt += veloParti* depart.coutManque;
+    			depart.disponible = 0;
+				depart.nbPlaceDispo = depart.capaMax;
+				
+				if(arrivee.nbPlaceDispo <= veloParti) { //pas assez de place pour deposer le velo
+					rslt += (veloParti - arrivee.nbPlaceDispo) * arrivee.coutTempsPerdu;
+					arrivee.disponible = arrivee.capaMax;
+					arrivee.nbPlaceDispo = 0;
+				}
+				else { 
+					arrivee.disponible += veloParti; 
+					arrivee.nbPlaceDispo -= veloParti;
+				}
+    		}
+			else {//assez de velo disponible au depart
+				depart.disponible -= demande;
+				depart.nbPlaceDispo += demande;
+				
+				if(arrivee.nbPlaceDispo <= demande ) { //pas de place pour deposer le velo
+					rslt += (demande - arrivee.nbPlaceDispo) * arrivee.coutTempsPerdu;
+					arrivee.disponible = arrivee.capaMax;
+					arrivee.nbPlaceDispo = 0;
+				}
 				else {
-					arrivee.disponible += 1; //ajout d'un velo
-					arrivee.nbPlaceDispo -= 1;
+					arrivee.disponible += demande;
+					arrivee.nbPlaceDispo -= demande;
 				}
 			}
     	}
