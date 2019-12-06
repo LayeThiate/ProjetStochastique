@@ -1,7 +1,8 @@
 package Controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+
+import Model.*;
 
 //import Model.Scenario;
 
@@ -85,7 +86,19 @@ public class UIControlleur {
     private ArrayList<String> arrayListSubConstraints = new ArrayList<String>();
     private ArrayList<String> arrayListBoundaries = new ArrayList<String>();
     private ArrayList<String> arrayListVariables = new ArrayList<String>();
+    public RecuitSup recuitSup = new RecuitSup(); //init, sinon nullPointer
+    private final String defaultStringReadTime = "Temps de lecture : ";
+    private final String defaultStringSolveTime = "Temps de résolution : ";
+    private final String defaultStringSolStatus = "Statut de la solution : ";
+    private final String defaultStringOptiIntSol = "Solution entière optimale : ";
+    private final String defaultStringNbIterations = "Itérations : ";
+    private double readTime;
+    private double solveTime;
+    private String solStatus;
+    private double optiIntSol;
+    private int nbIterations;
 
+    
 	/**
 	 * Constructeur
 	 */
@@ -117,14 +130,22 @@ public class UIControlleur {
 			//si aucun champ n'était vide (false), on peut lancer la résolution
 			if(getFonctionObj() && getSubConstraints() && getBoundaries()
 					&& getAllVariables() && getSliderTime() && getFileNameCSV()){
-				//envoi vers le recuit global
+				//envoi vers le recuit sup
 				//TODO
+				
+				//récupération des résultats et mise à jour de l'IHM
+				optiIntSol = recuitSup.getSolution();
+				lblOptiIntSol.setText(defaultStringOptiIntSol + optiIntSol);
 				
 				//test d'affichage pour voir qu'on a bien tout récupéré
 				//displayAllData();
 			}
-			//sinon on ne fait rien, pour ne pas créer d'erreurs dans le programme
-			//A appeler après chaque clic sur le bouton de résolution
+			else{
+				//sinon on ne fait rien, pour ne pas créer d'erreurs dans le programme
+				//on remet juste l'affichage des labels résultats par défaut au cas où 
+				resetLabelResults();
+			}
+			//A la fin, on nettoie après chaque clic sur le bouton de résolution
 			cleanseArrays();
          });
 	} 
@@ -217,6 +238,15 @@ public class UIControlleur {
 		System.out.println("Variables:");
 		for(String s : arrayListVariables)
 			System.out.println(s);
+	}
+	
+	//fonction à appeler après chaque clic du bouton de résolution
+	public void resetLabelResults(){
+		lblReadTime.setText(defaultStringReadTime);
+		lblSolveTime.setText(defaultStringSolveTime);
+		lblSolStatus.setText(defaultStringSolStatus);
+		lblOptiIntSol.setText(defaultStringOptiIntSol);
+		lblNbIterations.setText(defaultStringNbIterations);
 	}
 	
 	//fonction à appeler après chaque clic du bouton de résolution
