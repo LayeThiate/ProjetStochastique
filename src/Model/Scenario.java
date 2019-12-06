@@ -23,8 +23,27 @@ public class Scenario {
     }
 
     public int cout() {
-        // TODO Auto-generated return
-        return 0;
+    	int rslt = 0;
+    	Station depart, arrivee;
+    	for(int i = 0; i < listTrajet.size(); i++) {//cout lie aux trajets
+    		//extraction des données
+    		depart = listTrajet.get(i).depart;
+    		arrivee = listTrajet.get(i).arrivee;
+    		//vérification de la disponiibilite
+    		if(depart.disponible == 0) //pas de velo disponible
+    			rslt += depart.coutManque;
+			else {//velo disponible
+				depart.disponible -= 1;//un velo en moins disponible
+				depart.nbPlaceDispo += 1;
+				if(arrivee.nbPlaceDispo == 0) //pas de place pour deposer le velo
+					rslt += arrivee.coutTempsPerdu;
+				else {
+					arrivee.disponible += 1; //ajout d'un velo
+					arrivee.nbPlaceDispo -= 1;
+				}
+			}
+    	}
+        return rslt;
     }
 
     public int coutStocha() {

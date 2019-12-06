@@ -15,14 +15,13 @@ public class RecuitStochastique extends RecuitGlobal {
     	float newCout = 0.0f;
     	Scenario scenario = new Scenario();
     	Scenario minScenario = scenario;
-    	float cout = fonctionObjectif.getValue(scenario);
-    	boolean endCondition = false;
+    	float cout = scenario.cout();
     	//boucle du recuit
     	//while(!endCondition) {    		//condition sur la temperature
     		while(k<kmax){        		//iteration maximale du recuit pris a n**2 habituellement
         		int coutVoisin = scenario.voisinage(); //voisin du scenario et cout de mis en place
-        		newCout = fonctionObjectif.getValue(scenario) + coutVoisin; //calcul du cout pour nouveau scenario 
-    																		//avec cout de mise en place
+        		newCout = scenario.cout() + coutVoisin; //calcul du cout pour nouveau scenario 
+    													//avec cout de mise en place
         		if(newCout < cout) {
         			//scenario donne plus petit cout
         			minScenario = scenario;   
@@ -39,7 +38,6 @@ public class RecuitStochastique extends RecuitGlobal {
         		k++;
         	}
 			temperature = foncDecroissante();
-			endCondition = false;
 			this.valeurFoncObjectif = calculCout(minScenario);
     	//}
     	
