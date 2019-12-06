@@ -2,6 +2,7 @@ package view;
 
 import java.io.IOException;
 
+import Model.Data;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
@@ -29,6 +30,15 @@ public class ApplicationPrincipale extends Application{
 
     public static void main(String[] args) {
         launch(args);
+        
+        try {
+			Data.init("param.csv");
+			System.out.println(Data.getInstance().toString());
+			;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
 }
