@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="601.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Text layoutX="21.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bienvenue dans le programme de résolution stochastique ! " wrappingWidth="321.455078125" />
+      <Text layoutX="21.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ici, vous pourrez résoudre vos problèmes de différentes façons: déterministe, ou stochastique. Vous pouvez modifier les différents paramètres du problème" wrappingWidth="824.455078125" />
+      <Text layoutX="21.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="afin de les adapter le plus précisément possible à votre problème." wrappingWidth="687.455078125" />
+      <Separator layoutX="145.0" layoutY="80.0" prefHeight="5.0" prefWidth="704.0" />
+      <Text layoutX="21.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Problème à résoudre" wrappingWidth="116.455078125" />
+      <Label layoutX="32.0" layoutY="97.0" text="Fonction objectif :" />
+      <TextField layoutX="138.0" layoutY="93.0" prefHeight="25.0" prefWidth="301.0" promptText="Entrez la fonction" />
+      <Text fill="#00000091" layoutX="455.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ex: maximize 2*x1+3*x2+4*x3  ou  minimize SUM(2*x1+3*x2+4*x3)" wrappingWidth="393.455078125" />
+      <Label layoutX="28.0" layoutY="149.0" text="Sous-contraintes :" />
+      <Text fill="#00000091" layoutX="28.0" layoutY="186.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ex: Temps -x1+x2+x3&lt;=20" wrappingWidth="159.455078125" />
+      <Text fill="#00000091" layoutX="381.0" layoutY="182.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ex: 0&lt;=x1&lt;=40" wrappingWidth="159.455078125" />
+      <Label layoutX="381.0" layoutY="145.0" text="Bornes :" />
+      <Text fill="#00000091" layoutX="663.0" layoutY="177.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ex: x1" wrappingWidth="159.455078125" />
+      <Label layoutX="663.0" layoutY="140.0" text="Variables :" />
+      <TextArea layoutX="178.0" layoutY="153.0" prefHeight="162.0" prefWidth="128.0" />
+      <TextArea layoutX="476.0" layoutY="151.0" prefHeight="162.0" prefWidth="128.0" />
+      <TextArea layoutX="732.0" layoutY="143.0" prefHeight="170.0" prefWidth="113.0" />
+      <Text fill="#00000091" layoutX="674.0" layoutY="191.0" strokeType="OUTSIDE" strokeWidth="0.0" text="  x2" wrappingWidth="32.0" />
+      <RadioButton layoutX="700.0" layoutY="328.0" mnemonicParsing="false" text="Résolution déterministe" />
+      <RadioButton layoutX="700.0" layoutY="350.0" mnemonicParsing="false" text="Résolution stochastique" />
+      <Slider layoutX="25.0" layoutY="354.0" max="60.0" showTickLabels="true" showTickMarks="true" value="45.0" />
+      <Label layoutX="25.0" layoutY="324.0" text="Temps limite max de résolution (en minutes) :" />
+      <Button layoutX="714.0" layoutY="374.0" mnemonicParsing="false" text="Lancer la résolution" />
+      <Text layoutX="21.0" layoutY="421.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Résultat" wrappingWidth="77.455078125" />
+      <Separator layoutX="78.0" layoutY="416.0" prefHeight="5.0" prefWidth="781.0" />
+      <ScrollPane layoutX="468.0" layoutY="436.0" prefHeight="151.0" prefWidth="393.0">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="379.0">
+               <children>
+                  <TableView prefHeight="145.0" prefWidth="378.0">
+                    <columns>
+                      <TableColumn prefWidth="197.0" text="Nom de variable" />
+                      <TableColumn minWidth="0.0" prefWidth="175.0" text="Valeur de solution" />
+                    </columns>
+                  </TableView>
+               </children>
+            </AnchorPane>
+        </content>
+      </ScrollPane>
+      <Label layoutX="32.0" layoutY="436.0" text="Temps de lecture : " />
+      <Label layoutX="32.0" layoutY="453.0" text="Temps de résolution :" />
+      <Label layoutX="33.0" layoutY="470.0" text="Statut de la solution :" />
+      <Label layoutX="33.0" layoutY="487.0" text="Solution entière optimale: " />
+      <Label layoutX="33.0" layoutY="503.0" text="Itérations :" />
+      <TextField layoutX="381.0" layoutY="351.0" prefHeight="25.0" prefWidth="215.0" promptText="Entrez le nom du fichier" />
+      <Label layoutX="381.0" layoutY="324.0" text="Nom du fichier de données .csv :" />
+   </children>
+</AnchorPane>
