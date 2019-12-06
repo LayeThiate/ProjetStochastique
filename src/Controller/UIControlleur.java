@@ -115,7 +115,7 @@ public class UIControlleur {
 		btnLaunchSolve.setOnAction((event)-> {
 			//recuperation de toutes les donnees
 			//si aucun champ n'était vide (false), on peut lancer la résolution
-			if(getFonctionObjectif() && getSubConstraints() && getBoundaries()
+			if(getFonctionObj() && getSubConstraints() && getBoundaries()
 					&& getAllVariables() && getSliderTime() && getFileNameCSV()){
 				//envoi vers le recuit global
 				//TODO
@@ -138,7 +138,7 @@ public class UIControlleur {
 		System.out.println("Init done successfully");
 	}
 	
-	public boolean getFonctionObjectif(){
+	boolean getFonctionObj(){
 		if(!textFieldFctObj.getText().isEmpty()){
 			fonctionObjectif = textFieldFctObj.getText();
 			//System.out.println("getFonctionObjectif OK");
@@ -148,7 +148,7 @@ public class UIControlleur {
 			return false;
 	}
 	
-	public boolean getSubConstraints(){
+	boolean getSubConstraints(){
 		if(!textAreaSubConstraints.getText().isEmpty()){
 			for(String line : textAreaSubConstraints.getText().split("\\n")) 
 				arrayListSubConstraints.add(line);
@@ -159,7 +159,7 @@ public class UIControlleur {
 			return false;
 	}
 	
-	public boolean getBoundaries(){
+	boolean getBoundaries(){
 		if(!textAreaBoundaries.getText().isEmpty()){
 			for(String line : textAreaBoundaries.getText().split("\\n")) 
 				arrayListBoundaries.add(line);
@@ -170,7 +170,7 @@ public class UIControlleur {
 			return false;
 	}
 	
-	public boolean getAllVariables(){
+	boolean getAllVariables(){
 		if(!textAreaVariables.getText().isEmpty()){
 			for(String line : textAreaVariables.getText().split("\\n")) 
 				arrayListVariables.add(line);
@@ -181,7 +181,7 @@ public class UIControlleur {
 			return false;
 	}
 	
-	public boolean getSliderTime(){
+	boolean getSliderTime(){
 		double timeMinutes = sliderTimeMinutes.getValue();
 		if(timeMinutes >= 1.0){
 			int minutesEntieres = (int) timeMinutes;
@@ -193,7 +193,7 @@ public class UIControlleur {
 			return false;
 	}
 	
-	public boolean getFileNameCSV(){
+	boolean getFileNameCSV(){
 		if(!fileNameCSV.getText().isEmpty()){
 			strFileNameCSV = fileNameCSV.getText();
 			//System.out.println("getFileNameCSV OK");
@@ -224,6 +224,35 @@ public class UIControlleur {
 		arrayListSubConstraints.clear();
 		arrayListBoundaries.clear();
 		arrayListVariables.clear();
+	}
+	
+	//getters public pour les autres classes
+	public String getChoixResolution(){
+		return this.choixResolution;
+	}
+	
+	public String getStrFileNameCSV(){
+		return this.strFileNameCSV;
+	}
+	
+	public String getMinutesSliderTime(){
+		return this.minutesSliderTime;
+	}
+	
+	public String getFonctionObjectif(){
+		return this.fonctionObjectif;
+	}
+	
+	public ArrayList<String> getArrayListSubConstraints(){
+		return this.arrayListSubConstraints;
+	}
+	
+	public ArrayList<String> getArrayListBoundaries(){
+		return this.arrayListBoundaries;
+	}
+	
+	public ArrayList<String> getArrayListVariables(){
+		return this.arrayListVariables;
 	}
 
 }
