@@ -6,14 +6,13 @@ import Model.Scenario;
 
 public class RecuitStochastique extends RecuitGlobal {
 	
-    public void resoudreFoncObjectif() {
+    public void resoudreFoncObjectif(Scenario scenario) {
     	//fonction de resolution par recuit
     		//variables necessaires pour le recuit
     	int k = 0;
     	int kmax = 10;
     	float p = 0.0f;
     	float newCout = 0.0f;
-    	Scenario scenario = new Scenario();
     	Scenario minScenario = scenario;
     	float cout = scenario.cout();
     	//boucle du recuit
@@ -39,6 +38,7 @@ public class RecuitStochastique extends RecuitGlobal {
         	}
 			temperature = foncDecroissante();
 			this.valeurFoncObjectif = calculCout(minScenario);
+			fonctionObjectif.meilleureSolution = this.valeurFoncObjectif;
     	//}
     	
     }
