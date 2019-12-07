@@ -24,8 +24,6 @@ public class Scenario {
 
     public double cout() {
     	double rslt = 0.0;
-    	Station depart, arrivee;
-    	int demande;
     	for(int i = 0; i < listStation.size(); i++) {
     		//ajout de ci*xi
     		rslt += listStation.get(i).coutAjout * listStation.get(i).nbVeloInitial;

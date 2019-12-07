@@ -16,6 +16,7 @@ import com.opencsv.CSVReaderBuilder;
  *
  */
 public class Data {
+	private String objectif = "minimize";
 	private int numStation;
 	private int numScenario = 1;
 	private String []description;
@@ -47,7 +48,7 @@ public class Data {
 		for (int i = 0; i < numStation; i++) {
 			for (int j = 0; j < numStation; j++) {
 				for (int s = 0; s < numScenario; s++) {
-					eps[i][j][s] = (int) Math.random() * 25;
+					eps[i][j][s] = 0;
 				}
 			}
 		}
@@ -95,7 +96,7 @@ public class Data {
 		data.w =  new double[data.numStation];
 		data.latitude = new float[data.numStation];
 		data.longitude = new float[data.numStation];
-		
+		data.eps = new int[data.numStation][data.numStation][data.numScenario];
 		//description;code;id;capaMax;disponible;nbPlaceDispo;nbVeloInitial;
 		//coutAjout;coutManque;coutTempsPerdu;latitude;longitude
 		String []str ;
@@ -117,12 +118,9 @@ public class Data {
 			data.w[i] = new Double(str[9]);
 			data.latitude[i] = new Float(str[10]);
 			data.longitude[i] = new Float(str[11]);
-			data.eps = new int[data.numStation][data.numStation][data.numScenario];
 			
-			for(int j=0; j<3; j++){
+			for(int j=0; j<list.size(); j++){
 				data.eps[i][j][0] = new Integer(str[12+j]);
-				System.out.println(str[12+j]);
-				System.out.println(data.eps[i][j][0]);
 			}
 		}
 		/*
@@ -168,6 +166,14 @@ public class Data {
 	    reader.close();
 	    csvReader.close();
 	    return list;
+	}
+	
+	public String getObjectif() {
+		return objectif;
+	}
+	
+	public void setObjectif(String o) {
+		objectif = o;
 	}
 
 	public int getNumStation() {
@@ -299,25 +305,12 @@ public class Data {
 				+ Arrays.toString(longitude) + ", id=" + Arrays.toString(id) + ", c=" + Arrays.toString(c) + ", v="
 				+ Arrays.toString(v) + ", w=" + Arrays.toString(w) + ", k=" + Arrays.toString(k) + ", eps="
 				/*+ Arrays.toString(eps) + "]"*/;
-		/*
 		for(int i = 0; i < numStation; i++) {
 			rslt += "[";
 			for(int j = 0; j < numStation - 1; j++) {
-				System.out.println(eps[i][j][0]);
 				rslt += eps[i][j][0] + ", ";
 			}
 			rslt += rslt += eps[i][numStation-1][0] + "]";
-		}*/
-		/*
-		rslt+= "[" + eps[0][0][0] + "," + eps[0][1][0] + "," + eps[0][2][0] + "]";
-		rslt+= "[" + eps[1][0][0] + "," + eps[1][1][0] + "," + eps[1][2][0] + "]";
-		rslt+= "[" + eps[2][0][0] + "," + eps[2][1][0] + "," + eps[1][2][0] + "]";
-		*/
-		for(int i = 0; i<numStation; i++) {
-			for(int j=0; j<numStation; j++){
-				rslt += eps[i][j][0];
-			}
-			
 		}
 		return rslt;
 	}

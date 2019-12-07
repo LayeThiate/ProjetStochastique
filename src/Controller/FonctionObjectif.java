@@ -16,8 +16,9 @@ public class FonctionObjectif {
 
     public String[] coefficients;
     
-    public String objectif;
+    public String objectif = "minimize";
     	//maximize ou minimize
+    	//set to minimize by default
 
     public List<Trajet> listTrajet = new ArrayList<Trajet> ();
     	//liste des demandes pour chaque couple de stations

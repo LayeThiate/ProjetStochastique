@@ -20,7 +20,6 @@ public class RecuitStochastique extends RecuitGlobal {
     	boolean acceptedSolution = false;
     	Scenario minScenario = scenario;
     	double cout = scenario.cout();
-    	System.out.println("IN RECUIT STOCH: First cost " + cout);
     	//boucle du recuit
     	//while(!endCondition) {    		//condition sur la temperature
     		while(k<kmax){        		//iteration maximale du recuit pris a n**2 habituellement
@@ -28,13 +27,13 @@ public class RecuitStochastique extends RecuitGlobal {
         		newCout = scenario.cout() + coutVoisin; //calcul du cout pour nouveau scenario 
     													//avec cout de mise en place
         		
-        		if(newCout < cout) {
-        			//scenario donne plus petit cout
+        		if(fonctionObjectif.betterSolution(cout, newCout)) {
+        			//scenario donne meilleur solution
         			minScenario = scenario;   
         			cout = newCout;
         		}
         		else {
-        			//scneario donne plus grand cout
+        			//scneario donne moins bonne solution
         			p = (float) Math.random();
         			if(p <= Math.exp((newCout-cout)/temperature)) { // on decide de garder cette solution
             			minScenario = scenario;

@@ -21,9 +21,9 @@ public class RecuitSup {
     public void resolution() {
     	//recuit 
     	List<RecuitStochastique> listRecuit = new ArrayList<RecuitStochastique>();
-    	System.out.println("IN RECUIT SUP: Taille = " + taille);
     	for(int i = 0 ; i < taille; i++) {
     		RecuitStochastique recuitStochastique = new RecuitStochastique();
+    		recuitStochastique.fonctionObjectif = this.fonctionObjectif;
     		recuitStochastique.resoudreFoncObjectif(listScenario.get(0));
     		Double solution = recuitStochastique.fonctionObjectif.meilleureSolution;
     		listSolution.add(solution);
@@ -68,17 +68,9 @@ public class RecuitSup {
     			}
     			scenario.listStation.add(station);
     		}
-    		/*
-    		for(int j = 0; j < numStation; j++) {
-    			for(int k = 0  ; k < numStation; k++) {
-    				Trajet trajet = new Trajet();
-    				trajet.depart = scenario.listStation.get(j);
-    				trajet.arrivee = scenario.listStation.get(k);
-    				trajet.demande = (int) data.getEps()[j][k][i];
-    				
-    			}
-    		}*/
     	}
+    	fonctionObjectif = new FonctionObjectif();
+    	this.fonctionObjectif.objectif = data.getObjectif();
     }
 
     public double getSolution() {
