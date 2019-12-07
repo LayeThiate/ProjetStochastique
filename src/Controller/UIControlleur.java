@@ -98,7 +98,6 @@ public class UIControlleur {
     private ArrayList<String> arrayListSubConstraints = new ArrayList<String>();
     private ArrayList<String> arrayListBoundaries = new ArrayList<String>();
     private ArrayList<String> arrayListVariables = new ArrayList<String>();
-    public RecuitSup recuitSup = new RecuitSup(); //init, sinon nullPointer
     private final String defaultStringReadTime = "Temps de lecture : ";
     private final String defaultStringSolveTime = "Temps de résolution : ";
     private final String defaultStringSolStatus = "Statut de la solution : ";
@@ -138,56 +137,61 @@ public class UIControlleur {
          });
 		
 		btnLaunchSolve.setOnAction((event)-> {
+			//on remet juste l'affichage des labels résultats par défaut au cas où 
+			resetLabelResults();
+			tableView.setItems(null); //et on reset l'affichage du tableau
+			
 			//recuperation de toutes les donnees
 			//si aucun champ n'était vide (false), on peut lancer la résolution
 			if(getFonctionObj() && getSubConstraints() && getBoundaries()
 					&& getAllVariables() && getSliderTime() && getFileNameCSV()){
-				//envoi vers le recuit sup
-				//TODO
 				
-				//récupération des résultats et mise à jour de l'IHM
-				optiIntSolAndAvgSol = recuitSup.replyToUI();
-				lblOptiIntSol.setText(optiIntSolAndAvgSol.split("\n")[0]);
-				lblAvgSol.setText(optiIntSolAndAvgSol.split("\n")[1]);
-				
-				//test d'affichage pour voir qu'on a bien tout récupéré
-				//displayAllData();
-								
-				columnVarName.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Map.Entry<String, String>, String>, ObservableValue<String>>() {
-		            @Override
-		            public ObservableValue<String> call(TableColumn.CellDataFeatures<Map.Entry<String, String>, String> p) {
-		                // ce callback retourne la propriete pour une seule cellule, pas de boucle possible ici
-		                // on utilise cle en premiere colonne
-		                return new SimpleStringProperty(p.getValue().getKey());
-		            }
-		        });
-				
-		        columnVarValue.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Map.Entry<String, String>, String>, ObservableValue<String>>() {
-		            @Override
-		            public ObservableValue<String> call(TableColumn.CellDataFeatures<Map.Entry<String, String>, String> p) {
-		                // on utilise valeur en seconde colonne
-		                return new SimpleStringProperty(p.getValue().getValue());
-		            }
-		        });
+				//si choix == stochastique, résolution avec le recuit sup
+				if(choixResolution == "stochastique"){
+					RecuitSup recuitSup = new RecuitSup();
+					try {
+						recuitSup.genererScenario(strFileNameCSV);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					
+					//récupération des résultats et mise à jour de l'IHM
+					optiIntSolAndAvgSol = recuitSup.replyToUI();
+					lblOptiIntSol.setText(optiIntSolAndAvgSol.split("\n")[0]);
+					lblAvgSol.setText(optiIntSolAndAvgSol.split("\n")[1]);
+				}
+				else{ // choix == déterministe
+					columnVarName.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Map.Entry<String, String>, String>, ObservableValue<String>>() {
+			            @Override
+			            public ObservableValue<String> call(TableColumn.CellDataFeatures<Map.Entry<String, String>, String> p) {
+			                // ce callback retourne la propriete pour une seule cellule, pas de boucle possible ici
+			                // on utilise cle en premiere colonne
+			                return new SimpleStringProperty(p.getValue().getKey());
+			            }
+			        });
+					
+			        columnVarValue.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Map.Entry<String, String>, String>, ObservableValue<String>>() {
+			            @Override
+			            public ObservableValue<String> call(TableColumn.CellDataFeatures<Map.Entry<String, String>, String> p) {
+			                // on utilise valeur en seconde colonne
+			                return new SimpleStringProperty(p.getValue().getValue());
+			            }
+			        });
 
-		        HashMap<String, String> hmMockData = new HashMap<String, String>();
-		        hmMockData.put("x1", "999");
-		        hmMockData.put("x2", "666");
-		        hmMockData.put("x3", "333");
-		        hmMockData.put("x4", "444");
-		        hmMockData.put("x5", "555");
-		        hmMockData.put("x6", "222");
-		        
-		        ObservableList<Map.Entry<String, String>> items = FXCollections.observableArrayList(hmMockData.entrySet());
-		        tableView.setItems(items);
-				tableView.getColumns().setAll(columnVarName, columnVarValue);
-				
-			}
-			else{
-				//sinon on ne fait rien, pour ne pas créer d'erreurs dans le programme
-				//on remet juste l'affichage des labels résultats par défaut au cas où 
-				resetLabelResults();
-			}
+			        //Hashmap hardcodée de test, à remplacer par la vraie HashMap retournée
+			        HashMap<String, String> hmMockData = new HashMap<String, String>();
+			        hmMockData.put("x1", "999");
+			        hmMockData.put("x2", "666");
+			        hmMockData.put("x3", "333");
+			        hmMockData.put("x4", "444");
+			        hmMockData.put("x5", "555");
+			        hmMockData.put("x6", "222");
+			        
+			        ObservableList<Map.Entry<String, String>> items = FXCollections.observableArrayList(hmMockData.entrySet());
+			        tableView.setItems(items);
+					tableView.getColumns().setAll(columnVarName, columnVarValue);
+				}
+			} // fin if tous les champs ont bien été récupéré
 			//A la fin, on nettoie après chaque clic sur le bouton de résolution
 			cleanseArrays();
          });
@@ -199,7 +203,7 @@ public class UIControlleur {
 	@FXML
 	public void initialize() {
 		initButtons();
-		System.out.println("Init done successfully");
+		//System.out.println("Init done successfully");
 	}
 	
 	boolean getFonctionObj(){
@@ -261,6 +265,7 @@ public class UIControlleur {
 			return false;
 	}
 	
+	//test d'affichage pour voir qu'on a bien tout récupéré
 	public void displayAllData(){
 		System.out.println("Choix: " + choixResolution);
 		System.out.println("SliderTime: " + minutesSliderTime);
