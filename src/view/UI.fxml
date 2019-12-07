@@ -16,7 +16,7 @@
       <TextField fx:id="textFieldFctObj" layoutX="138.0" layoutY="93.0" prefHeight="25.0" prefWidth="301.0" promptText="Entrez la fonction" />
       <Text fill="#00000091" layoutX="455.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ex: maximize 2*x1+3*x2+4*x3  ou  minimize SUM(2*x1+3*x2+4*x3)" wrappingWidth="393.455078125" />
       <Label layoutX="28.0" layoutY="149.0" text="Sous-contraintes :" />
-      <Text fill="#00000091" layoutX="28.0" layoutY="186.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ex: Temps -x1+x2+x3&lt;=20" wrappingWidth="159.455078125" />
+      <Text fill="#00000091" layoutX="28.0" layoutY="186.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ex: Temps: -x1+x2+x3&lt;=20" wrappingWidth="159.455078125" />
       <Text fill="#00000091" layoutX="381.0" layoutY="182.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ex: 0&lt;=x1&lt;=40" wrappingWidth="159.455078125" />
       <Label layoutX="381.0" layoutY="145.0" text="Bornes :" />
       <Text fill="#00000091" layoutX="663.0" layoutY="177.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ex: x1" wrappingWidth="159.455078125" />
