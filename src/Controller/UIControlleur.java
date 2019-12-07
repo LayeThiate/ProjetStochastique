@@ -64,6 +64,9 @@ public class UIControlleur {
 	private Label lblOptiIntSol;
 	
 	@FXML
+	private Label lblAvgSol;
+	
+	@FXML
 	private Label lblNbIterations;
 
 	@FXML
@@ -91,11 +94,12 @@ public class UIControlleur {
     private final String defaultStringSolveTime = "Temps de résolution : ";
     private final String defaultStringSolStatus = "Statut de la solution : ";
     private final String defaultStringOptiIntSol = "Solution entière optimale : ";
+    private final String defaultAvgSol = "Moyenne des solutions :";
     private final String defaultStringNbIterations = "Itérations : ";
     private double readTime;
     private double solveTime;
     private String solStatus;
-    private double optiIntSol;
+    private String optiIntSolAndAvgSol;
     private int nbIterations;
 
     
@@ -134,8 +138,9 @@ public class UIControlleur {
 				//TODO
 				
 				//récupération des résultats et mise à jour de l'IHM
-				optiIntSol = recuitSup.getSolution();
-				lblOptiIntSol.setText(defaultStringOptiIntSol + optiIntSol);
+				optiIntSolAndAvgSol = recuitSup.replyToUI();
+				lblOptiIntSol.setText(optiIntSolAndAvgSol.split("\n")[0]);
+				lblAvgSol.setText(optiIntSolAndAvgSol.split("\n")[1]);
 				
 				//test d'affichage pour voir qu'on a bien tout récupéré
 				//displayAllData();
@@ -247,6 +252,7 @@ public class UIControlleur {
 		lblSolStatus.setText(defaultStringSolStatus);
 		lblOptiIntSol.setText(defaultStringOptiIntSol);
 		lblNbIterations.setText(defaultStringNbIterations);
+		lblAvgSol.setText(defaultAvgSol);
 	}
 	
 	//fonction à appeler après chaque clic du bouton de résolution
