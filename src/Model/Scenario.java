@@ -41,7 +41,7 @@ public class Scenario {
     		//ajout de wi*Ominus
     		rslt += listStation.get(i).coutTempsPerdu * Ominus;
     	}
-    	return rslt;
+    	return -rslt;
     }
 
     public double coutStocha() {

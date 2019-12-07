@@ -20,6 +20,7 @@ public class RecuitStochastique extends RecuitGlobal {
     	boolean acceptedSolution = false;
     	Scenario minScenario = scenario;
     	double cout = scenario.cout();
+    	System.out.println("IN RECUIT STOCH: " + cout);
     	//boucle du recuit
     	//while(!endCondition) {    		//condition sur la temperature
     		while(k<kmax){        		//iteration maximale du recuit pris a n**2 habituellement

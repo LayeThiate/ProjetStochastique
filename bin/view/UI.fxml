@@ -32,20 +32,15 @@
       <Button fx:id="btnLaunchSolve" layoutX="714.0" layoutY="374.0" mnemonicParsing="false" text="Lancer la résolution" />
       <Text layoutX="21.0" layoutY="421.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Résultat" wrappingWidth="77.455078125" />
       <Separator layoutX="78.0" layoutY="416.0" prefHeight="5.0" prefWidth="781.0" />
-      <ScrollPane fx:id="scrollPane" layoutX="468.0" layoutY="436.0" prefHeight="151.0" prefWidth="393.0">
-        <content>
-          <AnchorPane fx:id="subAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="379.0">
-               <children>
-                  <TableView fx:id="tableView" prefHeight="145.0" prefWidth="378.0">
-                    <columns>
-                      <TableColumn fx:id="columnVarName" prefWidth="197.0" text="Nom de variable" />
-                      <TableColumn fx:id="columnVarValue" minWidth="0.0" prefWidth="175.0" text="Valeur de solution" />
-                    </columns>
-                  </TableView>
-               </children>
-            </AnchorPane>
-        </content>
-      </ScrollPane>
+      <TableView fx:id="tableView" layoutX="474.0" layoutY="432.0" prefHeight="145.0" prefWidth="378.0">
+        <columns>
+          <TableColumn fx:id="columnVarName" prefWidth="197.0" text="Nom de variable" />
+          <TableColumn fx:id="columnVarValue" minWidth="0.0" prefWidth="175.0" text="Valeur de solution" />
+        </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
       <Label fx:id="lblReadTime" layoutX="32.0" layoutY="436.0" text="Temps de lecture : " />
       <Label fx:id="lblSolveTime" layoutX="32.0" layoutY="453.0" text="Temps de résolution :" />
       <Label fx:id="lblSolStatus" layoutX="33.0" layoutY="470.0" text="Statut de la solution :" />
