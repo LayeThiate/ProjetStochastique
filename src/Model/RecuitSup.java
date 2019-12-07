@@ -12,7 +12,7 @@ public class RecuitSup {
 
     public List<Scenario> listScenario = new ArrayList<Scenario> ();
     
-    public List<Integer> listSolution = new ArrayList<Integer>();
+    public List<Double> listSolution = new ArrayList<Double>();
     
     public FonctionObjectif fonctionObjectif;
     
@@ -24,7 +24,7 @@ public class RecuitSup {
     	
     	for(int i = 0 ; i < taille; i++) {
     		listRecuit.get(i).resoudreFoncObjectif(listScenario.get(0));
-    		listSolution.add(listRecuit.get(i).valeurFoncObjectif);
+    		listSolution.add(listRecuit.get(i).fonctionObjectif.meilleureSolution);
     	}
     }
 

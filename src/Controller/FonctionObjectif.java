@@ -7,11 +7,12 @@ import java.util.List;
 import Model.*;
 
 public class FonctionObjectif {
-    public int meilleureSolution;
+    public double meilleureSolution;
     
-    public HashMap<String , Integer> variables;
+    public HashMap<String , Double> variables;
+    	//variables de la fonctions
 
-    public int[] parametre;
+    public double[] parametre;
 
     public String[] coefficients;
     
@@ -19,6 +20,7 @@ public class FonctionObjectif {
     	//maximize ou minimize
 
     public List<Trajet> listTrajet = new ArrayList<Trajet> ();
+    	//liste des demandes pour chaque couple de stations
     
     public float getValue(Scenario scenario) {
     	return 0.0f;
