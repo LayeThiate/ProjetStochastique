@@ -1,14 +1,23 @@
 package Controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import Model.*;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 
 //import Model.Scenario;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
+import javafx.util.Callback;
 
 public class UIControlleur {
     //public RecuitGlobal recuitGlobal;
@@ -70,7 +79,7 @@ public class UIControlleur {
 	private Label lblNbIterations;
 
 	@FXML
-	private TableView tableView;
+	private TableView<Map.Entry<String,String>> tableView;
 	
 	@FXML
 	private TableColumn columnVarName;
@@ -100,8 +109,7 @@ public class UIControlleur {
     private double solveTime;
     private String solStatus;
     private String optiIntSolAndAvgSol;
-    private int nbIterations;
-
+    private int nbIterations;    
     
 	/**
 	 * Constructeur
@@ -144,6 +152,36 @@ public class UIControlleur {
 				
 				//test d'affichage pour voir qu'on a bien tout récupéré
 				//displayAllData();
+								
+				columnVarName.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Map.Entry<String, String>, String>, ObservableValue<String>>() {
+		            @Override
+		            public ObservableValue<String> call(TableColumn.CellDataFeatures<Map.Entry<String, String>, String> p) {
+		                // ce callback retourne la propriete pour une seule cellule, pas de boucle possible ici
+		                // on utilise cle en premiere colonne
+		                return new SimpleStringProperty(p.getValue().getKey());
+		            }
+		        });
+				
+		        columnVarValue.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Map.Entry<String, String>, String>, ObservableValue<String>>() {
+		            @Override
+		            public ObservableValue<String> call(TableColumn.CellDataFeatures<Map.Entry<String, String>, String> p) {
+		                // on utilise valeur en seconde colonne
+		                return new SimpleStringProperty(p.getValue().getValue());
+		            }
+		        });
+
+		        HashMap<String, String> hmMockData = new HashMap<String, String>();
+		        hmMockData.put("x1", "999");
+		        hmMockData.put("x2", "666");
+		        hmMockData.put("x3", "333");
+		        hmMockData.put("x4", "444");
+		        hmMockData.put("x5", "555");
+		        hmMockData.put("x6", "222");
+		        
+		        ObservableList<Map.Entry<String, String>> items = FXCollections.observableArrayList(hmMockData.entrySet());
+		        tableView.setItems(items);
+				tableView.getColumns().setAll(columnVarName, columnVarValue);
+				
 			}
 			else{
 				//sinon on ne fait rien, pour ne pas créer d'erreurs dans le programme
@@ -167,7 +205,6 @@ public class UIControlleur {
 	boolean getFonctionObj(){
 		if(!textFieldFctObj.getText().isEmpty()){
 			fonctionObjectif = textFieldFctObj.getText();
-			//System.out.println("getFonctionObjectif OK");
 			return true;
 		}
 		else
@@ -178,7 +215,6 @@ public class UIControlleur {
 		if(!textAreaSubConstraints.getText().isEmpty()){
 			for(String line : textAreaSubConstraints.getText().split("\\n")) 
 				arrayListSubConstraints.add(line);
-			//System.out.println("getSubConstraints OK");
 			return true;
 		}
 		else 
@@ -189,7 +225,6 @@ public class UIControlleur {
 		if(!textAreaBoundaries.getText().isEmpty()){
 			for(String line : textAreaBoundaries.getText().split("\\n")) 
 				arrayListBoundaries.add(line);
-			//System.out.println("getBoundaries OK");
 			return true;
 		}
 		else 
@@ -200,7 +235,6 @@ public class UIControlleur {
 		if(!textAreaVariables.getText().isEmpty()){
 			for(String line : textAreaVariables.getText().split("\\n")) 
 				arrayListVariables.add(line);
-			//System.out.println("getAllVariables OK");
 			return true;
 		}
 		else 
@@ -212,7 +246,6 @@ public class UIControlleur {
 		if(timeMinutes >= 1.0){
 			int minutesEntieres = (int) timeMinutes;
 			minutesSliderTime = Integer.toString(minutesEntieres);
-			//System.out.println("getSliderTime OK");
 			return true;
 		}
 		else
@@ -222,7 +255,6 @@ public class UIControlleur {
 	boolean getFileNameCSV(){
 		if(!fileNameCSV.getText().isEmpty()){
 			strFileNameCSV = fileNameCSV.getText();
-			//System.out.println("getFileNameCSV OK");
 			return true;
 		}
 		else 
