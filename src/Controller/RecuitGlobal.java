@@ -6,7 +6,7 @@ import Model.Scenario;
 import Model.Trajet;
 
 public class RecuitGlobal {
-    public int valeurFoncObjectif;
+    public double valeurFoncObjectif;
 
     public float temperature;
 
@@ -15,6 +15,11 @@ public class RecuitGlobal {
     public FonctionObjectif fonctionObjectif;
 
     public ApproxGenerique approxGenerique;
+    
+    public RecuitGlobal() {
+    	temperature = 0.0f;
+    	fonctionObjectif = new FonctionObjectif();
+    }
 
     public void resoudreFonctObectif(Scenario scenario) {
     	//boucle sur les différents recuits pour trouver une solution

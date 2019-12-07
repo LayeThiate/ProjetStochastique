@@ -1,5 +1,8 @@
 package Model;
 
+import java.awt.List;
+import java.util.ArrayList;
+
 public class Station {
 	
 	public String description;
@@ -14,10 +17,11 @@ public class Station {
 	public double coutTempsPerdu;
 	public double latitude;
 	public double longitude;
-	
+	public ArrayList<Integer> demande;
 	
 	public Station() {
 		super();
+		this.demande = new ArrayList<Integer>();
 	}
 
 	public Station(String description, String code, int id, int capaMax, int disponible, int nbPlaceDispo,
@@ -35,6 +39,7 @@ public class Station {
 		this.coutTempsPerdu = coutTempsPerdu;
 		this.latitude = latitude;
 		this.longitude = longitude;
+		this.demande = new ArrayList<Integer>();
 	}
 
 	public String getDescription() {

@@ -1,1 +1,4 @@
-description;code;id;capaMax;disponible;nbPlaceDispo;nbVeloInitial;coutAjout;coutManque;coutTempsPerdu;latitude;longitudestation 1;SE44;1;6;5;1;5;10;5;15;48.865983;2.275725station 2;DFDE44;2;7;5;2;5;30;20;20;58.865983;3.275725station 3;G04U;3;5;5;0;5;40;17;30;60.55;4.27575
+description;code;id;capaMax;disponible;nbPlaceDispo;nbVeloInitial;coutAjout;coutManque;coutTempsPerdu;latitude;longitude;demandeTo1;demandeTo2;demandeTo3
+station 1;SE44;1;6;5;1;5;10;5;15;48.865983;2.275725;0;4;1
+station 2;DFDE44;2;7;5;2;5;30;20;20;58.865983;3.275725;3;0;1
+station 3;G04U;3;5;5;0;5;40;17;30;60.55;4.27575;3;2;0

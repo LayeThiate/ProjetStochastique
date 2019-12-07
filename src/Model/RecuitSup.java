@@ -21,10 +21,12 @@ public class RecuitSup {
     public void resolution() {
     	//recuit 
     	List<RecuitStochastique> listRecuit = new ArrayList<RecuitStochastique>();
-    	
+    	System.out.println("IN RECUIT SUP: Taille = " + taille);
     	for(int i = 0 ; i < taille; i++) {
-    		listRecuit.get(i).resoudreFoncObjectif(listScenario.get(0));
-    		listSolution.add(listRecuit.get(i).fonctionObjectif.meilleureSolution);
+    		RecuitStochastique recuitStochastique = new RecuitStochastique();
+    		recuitStochastique.resoudreFoncObjectif(listScenario.get(0));
+    		Double solution = recuitStochastique.fonctionObjectif.meilleureSolution;
+    		listSolution.add(solution);
     	}
     }
 
@@ -43,12 +45,10 @@ public class RecuitSup {
     		return;
     	}
     	this.taille = numScenario;
-    	System.out.println(numScenario);
     	for(int i = 0; i < numScenario; i++) {
     		Scenario scenario =  new Scenario();
     		listScenario.add(scenario);
     	}
-    	System.out.println(numScenario);
     	for(int i = 0; i < numScenario; i++) {
     		Scenario scenario = listScenario.get(i);
     		for(int j = 0; j < numStation; j++) {
@@ -62,16 +62,22 @@ public class RecuitSup {
     			station.nbPlaceDispo = data.getNbPlaceDispo()[j];
     			station.latitude = data.getLatitude()[j];
     			station.longitude = data.getLongitude()[j];
+    			for(int k = 0; k < numStation; k++) {
+    				int demande = data.getEps()[j][k][i];
+        			station.demande.add(demande);
+    			}
     			scenario.listStation.add(station);
     		}
+    		/*
     		for(int j = 0; j < numStation; j++) {
     			for(int k = 0  ; k < numStation; k++) {
     				Trajet trajet = new Trajet();
     				trajet.depart = scenario.listStation.get(j);
     				trajet.arrivee = scenario.listStation.get(k);
     				trajet.demande = (int) data.getEps()[j][k][i];
+    				
     			}
-    		}
+    		}*/
     	}
     }
 
@@ -115,10 +121,14 @@ public class RecuitSup {
     public static void main(String[] args) throws Exception {
     	//TEST UNIT
     	String filePath = "C:\\Users\\Candassamy\\Documents\\PolytechParisSud\\ET5\\S9\\Stochastique\\ProjetStochastique\\test.csv";
+    	System.out.println("Generation des scenarios");
     	RecuitSup recuitSup = new RecuitSup();
     	recuitSup.genererScenario(filePath);
-    	System.err.println("Generation des scenarios terminee");
+    	System.out.println("Generation des scenarios: DONE");
     	System.out.println(recuitSup.data.toString());
-		
+    	System.out.println("Resolution du recuit");
+		//recuitSup.resolution();
+		System.out.println(recuitSup.replyToUI());
+    	System.out.println("Resolution du recuit: DONE");
     }
 }

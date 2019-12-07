@@ -26,44 +26,24 @@ public class Scenario {
     	double rslt = 0.0;
     	Station depart, arrivee;
     	int demande;
-    	for(int i = 0; i < listTrajet.size(); i++) {//cout lie aux trajets
-    		//extraction des données
-    		depart = listTrajet.get(i).depart;
-    		arrivee = listTrajet.get(i).arrivee;
-    		demande = listTrajet.get(i).demande;
-    		//vérification de la disponiibilite
-    		if(depart.disponible <= demande) { //pas assez de velo disponible
-    			int veloParti = (demande - depart.disponible);
-    			rslt += veloParti* depart.coutManque;
-    			depart.disponible = 0;
-				depart.nbPlaceDispo = depart.capaMax;
-				
-				if(arrivee.nbPlaceDispo <= veloParti) { //pas assez de place pour deposer le velo
-					rslt += (veloParti - arrivee.nbPlaceDispo) * arrivee.coutTempsPerdu;
-					arrivee.disponible = arrivee.capaMax;
-					arrivee.nbPlaceDispo = 0;
-				}
-				else { 
-					arrivee.disponible += veloParti; 
-					arrivee.nbPlaceDispo -= veloParti;
-				}
+    	for(int i = 0; i < listStation.size(); i++) {
+    		//ajout de ci*xi
+    		rslt += listStation.get(i).coutAjout * listStation.get(i).nbVeloInitial;
+    		
+    		double Iminus = 0.0;
+    		double Ominus = listStation.get(i).nbVeloInitial - listStation.get(i).capaMax;
+    		for(int j = 0; j < listStation.size(); j++) {
+    			Iminus += listStation.get(i).demande.get(j);
+    			Ominus -= listStation.get(i).demande.get(j);
+    			Ominus += listStation.get(j).demande.get(i);
     		}
-			else {//assez de velo disponible au depart
-				depart.disponible -= demande;
-				depart.nbPlaceDispo += demande;
-				
-				if(arrivee.nbPlaceDispo <= demande ) { //pas de place pour deposer le velo
-					rslt += (demande - arrivee.nbPlaceDispo) * arrivee.coutTempsPerdu;
-					arrivee.disponible = arrivee.capaMax;
-					arrivee.nbPlaceDispo = 0;
-				}
-				else {
-					arrivee.disponible += demande;
-					arrivee.nbPlaceDispo -= demande;
-				}
-			}
+    		
+    		//ajout de vi*Iminus
+    		rslt += listStation.get(i).coutManque * Iminus;
+    		//ajout de wi*Ominus
+    		rslt += listStation.get(i).coutTempsPerdu * Ominus;
     	}
-        return rslt;
+    	return rslt;
     }
 
     public double coutStocha() {

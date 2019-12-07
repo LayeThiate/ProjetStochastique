@@ -30,7 +30,7 @@ public class Data {
 	private double []v; 				//missing cost of bike in a station
 	private double []w; 				//lost time cost by a user to find a bike in a station
 	private double []k;				//capacity in number of bike for a station
-	private double[][][] eps = new double[numStation][numStation][numScenario]; // stochastic parameters
+	private int[][][] eps = new int[numStation][numStation][numScenario]; // stochastic parameters
 	
 	private static Data instance = null;
 	
@@ -47,7 +47,7 @@ public class Data {
 		for (int i = 0; i < numStation; i++) {
 			for (int j = 0; j < numStation; j++) {
 				for (int s = 0; s < numScenario; s++) {
-					eps[i][j][s] = Math.random() * 25;
+					eps[i][j][s] = (int) Math.random() * 25;
 				}
 			}
 		}
@@ -99,7 +99,7 @@ public class Data {
 		//description;code;id;capaMax;disponible;nbPlaceDispo;nbVeloInitial;
 		//coutAjout;coutManque;coutTempsPerdu;latitude;longitude
 		String []str ;
-		
+
 		//For each station, assign its values
 		for(int i=0; i<list.size(); i++) {
 			
@@ -117,18 +117,25 @@ public class Data {
 			data.w[i] = new Double(str[9]);
 			data.latitude[i] = new Float(str[10]);
 			data.longitude[i] = new Float(str[11]);
+			data.eps = new int[data.numStation][data.numStation][data.numScenario];
+			
+			for(int j=0; j<3; j++){
+				data.eps[i][j][0] = new Integer(str[12+j]);
+				System.out.println(str[12+j]);
+				System.out.println(data.eps[i][j][0]);
+			}
 		}
-		
+		/*
 		data.eps = new double[data.numStation][data.numStation][data.numScenario];
 		//init the scenario
 		for (int i = 0; i < data.numStation; i++) {
 			for (int j = 0; j < data.numStation; j++) {
 				for (int s = 0; s < data.numScenario; s++) {
-					data.eps[i][j][s] = Math.random() * 25;
+					data.eps[i][j][s] = Math.random() * 25; //TODO: change to data from csv file
 				}
 			}
 		}
-		
+		*/
 	}
 	
 	/**
@@ -211,11 +218,11 @@ public class Data {
 		this.k = k;
 	}
 
-	public double[][][] getEps() {
+	public int[][][] getEps() {
 		return eps;
 	}
 
-	public void setEps(double[][][] eps) {
+	public void setEps(int[][][] eps) {
 		this.eps = eps;
 	}
 
@@ -285,13 +292,34 @@ public class Data {
 
 	@Override
 	public String toString() {
-		return "Data [numStation=" + numStation + ", numScenario=" + numScenario + ", description="
+		String rslt = "Data [numStation=" + numStation + ", numScenario=" + numScenario + ", description="
 				+ Arrays.toString(description) + ", code=" + Arrays.toString(code) + ", disponible="
 				+ Arrays.toString(disponible) + ", nbPlaceDispo=" + Arrays.toString(nbPlaceDispo) + ", nbVeloInitial="
 				+ Arrays.toString(nbVeloInitial) + ", latitude=" + Arrays.toString(latitude) + ", longitude="
 				+ Arrays.toString(longitude) + ", id=" + Arrays.toString(id) + ", c=" + Arrays.toString(c) + ", v="
 				+ Arrays.toString(v) + ", w=" + Arrays.toString(w) + ", k=" + Arrays.toString(k) + ", eps="
-				+ Arrays.toString(eps) + "]";
+				/*+ Arrays.toString(eps) + "]"*/;
+		/*
+		for(int i = 0; i < numStation; i++) {
+			rslt += "[";
+			for(int j = 0; j < numStation - 1; j++) {
+				System.out.println(eps[i][j][0]);
+				rslt += eps[i][j][0] + ", ";
+			}
+			rslt += rslt += eps[i][numStation-1][0] + "]";
+		}*/
+		/*
+		rslt+= "[" + eps[0][0][0] + "," + eps[0][1][0] + "," + eps[0][2][0] + "]";
+		rslt+= "[" + eps[1][0][0] + "," + eps[1][1][0] + "," + eps[1][2][0] + "]";
+		rslt+= "[" + eps[2][0][0] + "," + eps[2][1][0] + "," + eps[1][2][0] + "]";
+		*/
+		for(int i = 0; i<numStation; i++) {
+			for(int j=0; j<numStation; j++){
+				rslt += eps[i][j][0];
+			}
+			
+		}
+		return rslt;
 	}
 
 }
