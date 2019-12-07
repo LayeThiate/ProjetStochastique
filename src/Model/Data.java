@@ -79,7 +79,7 @@ public class Data {
 	 * @param file
 	 * @throws Exception
 	 */
-	private static void fillData(Data data, String file) throws Exception {
+	public static void fillData(Data data, String file) throws Exception {
 		List<String[]> list = parseCSV(file);
 		data.numStation = list.size();
 		

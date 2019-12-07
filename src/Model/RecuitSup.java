@@ -30,7 +30,8 @@ public class RecuitSup {
 
     public void genererScenario(String filePath) throws Exception {
     	//parser les données entrées par l'utilisateur et créer les objets
-    	data.parseCSV(filePath);
+    	data = Data.getInstance();
+    	Data.fillData(data,filePath);
     	int numScenario = data.getNumScenario();
     	int numStation = data.getNumStation();
     	if(numScenario <= 0) {
@@ -42,6 +43,12 @@ public class RecuitSup {
     		return;
     	}
     	this.taille = numScenario;
+    	System.out.println(numScenario);
+    	for(int i = 0; i < numScenario; i++) {
+    		Scenario scenario =  new Scenario();
+    		listScenario.add(scenario);
+    	}
+    	System.out.println(numScenario);
     	for(int i = 0; i < numScenario; i++) {
     		Scenario scenario = listScenario.get(i);
     		for(int j = 0; j < numStation; j++) {
@@ -105,4 +112,13 @@ public class RecuitSup {
     	return rslt;
     }
 
+    public static void main(String[] args) throws Exception {
+    	//TEST UNIT
+    	String filePath = "C:\\Users\\Candassamy\\Documents\\PolytechParisSud\\ET5\\S9\\Stochastique\\ProjetStochastique\\test.csv";
+    	RecuitSup recuitSup = new RecuitSup();
+    	recuitSup.genererScenario(filePath);
+    	System.err.println("Generation des scenarios terminee");
+    	System.out.println(recuitSup.data.toString());
+		
+    }
 }
