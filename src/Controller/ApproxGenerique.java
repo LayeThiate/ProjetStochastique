@@ -7,7 +7,7 @@ public class ApproxGenerique {
 
     public Scenario scenario;
     
-    public int solutionOptimale;
+    public double solutionOptimale;
 
     public void resoudreEchant() {
     	//affecter la solution optimale par la résolution Cplex

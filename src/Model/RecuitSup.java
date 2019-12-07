@@ -2,6 +2,12 @@ package Model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import Controller.*;
 
@@ -99,9 +105,18 @@ public class RecuitSup {
     }
     
     //fonction pour renvoyer l'affichage de la solution a l'UI
-    public String replyToUI() {
+    public String replyToUI(){
     	//lancer la resolution
-    	this.resolution();
+    	final ExecutorService executor = Executors.newFixedThreadPool(4);
+    	final Future<?> future = executor.submit(() -> {
+    		this.resolution();
+    	});
+    	try {
+			future.get((long) data.timeLimit, TimeUnit.SECONDS);
+		} catch (InterruptedException | ExecutionException | TimeoutException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	//reponse a l'UI sous forme de string
     		//solution optimale
     	String rslt ="Solution optimale: " + getSolution();

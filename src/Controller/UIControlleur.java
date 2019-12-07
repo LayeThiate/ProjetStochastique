@@ -1,8 +1,11 @@
 package Controller;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 import Model.*;
 import javafx.beans.property.SimpleStringProperty;
@@ -154,7 +157,7 @@ public class UIControlleur {
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-					
+					recuitSup.data.timeLimit = solveTime;
 					//récupération des résultats et mise à jour de l'IHM
 					optiIntSolAndAvgSol = recuitSup.replyToUI();
 					lblOptiIntSol.setText(optiIntSolAndAvgSol.split("\n")[0]);

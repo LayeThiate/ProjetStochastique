@@ -32,6 +32,7 @@ public class Data {
 	private double []w; 				//lost time cost by a user to find a bike in a station
 	private double []k;				//capacity in number of bike for a station
 	private int[][][] eps = new int[numStation][numStation][numScenario]; // stochastic parameters
+	public double timeLimit = 10.0;
 	
 	private static Data instance = null;
 	
