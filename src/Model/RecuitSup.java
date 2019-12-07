@@ -21,18 +21,27 @@ public class RecuitSup {
     public void resolution() {
     	//recuit 
     	List<RecuitStochastique> listRecuit = new ArrayList<RecuitStochastique>();
+    	
     	for(int i = 0 ; i < taille; i++) {
-    		listRecuit.get(i).resoudreFoncObjectif(listScenario.get(i));
+    		listRecuit.get(i).resoudreFoncObjectif(listScenario.get(0));
     		listSolution.add(listRecuit.get(i).valeurFoncObjectif);
     	}
     }
 
-    public void genererScenario() throws Exception {
+    public void genererScenario(String filePath) throws Exception {
     	//parser les données entrées par l'utilisateur et créer les objets
-    	String pathFile = " ";
-    	data.parseCSV(pathFile);
+    	data.parseCSV(filePath);
     	int numScenario = data.getNumScenario();
     	int numStation = data.getNumStation();
+    	if(numScenario <= 0) {
+    		System.err.println("MODEL ERROR: Incorrect number of scenarios, check CSV file");
+    		return;
+    	}
+    	if(numStation <= 0) {
+    		System.err.println("MODEL ERROR: Incorrect number of stations, check CSV file");
+    		return;
+    	}
+    	this.taille = numScenario;
     	for(int i = 0; i < numScenario; i++) {
     		Scenario scenario = listScenario.get(i);
     		for(int j = 0; j < numStation; j++) {
@@ -49,7 +58,7 @@ public class RecuitSup {
     			scenario.listStation.add(station);
     		}
     		for(int j = 0; j < numStation; j++) {
-    			for(int k = 0  ; k< numStation; k++) {
+    			for(int k = 0  ; k < numStation; k++) {
     				Trajet trajet = new Trajet();
     				trajet.depart = scenario.listStation.get(j);
     				trajet.arrivee = scenario.listStation.get(k);
@@ -60,6 +69,10 @@ public class RecuitSup {
     }
 
     public double getSolution() {
+    	if(listSolution.size() <= 0) {
+    		System.err.println("MODEL ERROR: No solutions found in solution list");
+    		return 0.0;
+    	}
     	double meilleureSolution = listSolution.get(0);
     	for(int i = 1 ; i < taille; i++) {
     		if(fonctionObjectif.betterSolution(meilleureSolution, listSolution.get(i))) {
@@ -69,11 +82,27 @@ public class RecuitSup {
     	return meilleureSolution;
     }
 
-    public float getMoyenne() {
-    	float rslt = 0;
+    public double getMoyenne() {
+    	if(listSolution.size() <= 0) {
+    		System.err.println("MODEL ERROR: No solutions found in solution list");
+    		return 0.0;
+    	}
+    	double rslt = 0;
     	for(int i =0 ; i<listSolution.size() ; i++)
     		rslt += listSolution.get(i);
     	return rslt/listSolution.size();
+    }
+    
+    //fonction pour renvoyer l'affichage de la solution a l'UI
+    public String replyToUI() {
+    	//lancer la resolution
+    	this.resolution();
+    	//reponse a l'UI sous forme de string
+    		//solution optimale
+    	String rslt ="Solution optimale: " + getSolution();
+    		//moyenne des solutions
+    	rslt += "\nMoyenne des solutions: " + getMoyenne();
+    	return rslt;
     }
 
 }
