@@ -107,7 +107,9 @@ public class RecuitSup {
     //fonction pour renvoyer l'affichage de la solution a l'UI
     public String replyToUI(){
     	//lancer la resolution
-    	final ExecutorService executor = Executors.newFixedThreadPool(4);
+    	int nbThread = Runtime.getRuntime().availableProcessors();
+    	System.out.println(" nombre de threads " + nbThread);
+    	final ExecutorService executor = Executors.newFixedThreadPool(nbThread);
     	final Future<?> future = executor.submit(() -> {
     		this.resolution();
     	});
@@ -117,6 +119,8 @@ public class RecuitSup {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+    	
+    	executor.shutdown();
     	//reponse a l'UI sous forme de string
     		//solution optimale
     	String rslt ="Solution optimale: " + getSolution();
@@ -127,7 +131,8 @@ public class RecuitSup {
 
     public static void main(String[] args) throws Exception {
     	//TEST UNIT
-    	String filePath = "C:\\Users\\Candassamy\\Documents\\PolytechParisSud\\ET5\\S9\\Stochastique\\ProjetStochastique\\test.csv";
+    	//String filePath = "C:\\Users\\Candassamy\\Documents\\PolytechParisSud\\ET5\\S9\\Stochastique\\ProjetStochastique\\test.csv";
+    	String filePath = "param.csv";
     	System.out.println("Generation des scenarios");
     	RecuitSup recuitSup = new RecuitSup();
     	recuitSup.genererScenario(filePath);

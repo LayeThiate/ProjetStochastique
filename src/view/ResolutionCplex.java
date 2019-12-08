@@ -1,34 +1,26 @@
 package view;
 
-import java.io.FileReader;
-import java.io.Reader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import com.opencsv.CSVParser;
-import com.opencsv.CSVParserBuilder;
-import com.opencsv.CSVReader;
-import com.opencsv.CSVReaderBuilder;
-
+import Controller.IResulsat;
+import Model.Data;
 import ilog.concert.IloException;
 import ilog.concert.IloLinearNumExpr;
 import ilog.concert.IloNumVar;
 import ilog.cplex.IloCplex;
 
-public class ResolutionCplex {
-
+public class ResolutionCplex implements IResulsat {
+	
 	private Map<String, String> solutions = new HashMap<>();
 	private double resolutionTime;
 	private double loadTime;
 	private double solution;
 	private String statut;
+	private int iteratioNumber;
 
-	int numStation = 100;
-	int numScenario = 100;
+	int numStation = 10;
+	int numScenario = 10;
 
 	// Data
 	// deterministic parameters
@@ -36,24 +28,36 @@ public class ResolutionCplex {
 	double[] v = new double[numStation]; // vi
 	double[] w = new double[numStation]; // wi
 	double[] k = new double[numStation]; // ki
+	
+	private Data data ;
 
 	public ResolutionCplex() {
 		super();
+		this.data = Data.getInstance();
+		this.numScenario = data.getNumScenario();
+		this.numStation = data.getNumStation();
+		
+		this.c = data.getC();
+		this.v = data.getV();
+		this.w = data.getW();
+		this.k = data.getK();
+		
 	}
 
 	public void solve() {
 
 		IloNumVar[][] varSol = new IloNumVar[6][];
 
-		for (int i = 0; i < numStation; i++) {
-			c[i] = Math.random() * 50;
-			v[i] = Math.random() * 50;
-			w[i] = Math.random() * 50;
-			k[i] = Math.random() * 50;
-		}
+//		for (int i = 0; i < numStation; i++) {
+//			c[i] = Math.random() * 50;
+//			v[i] = Math.random() * 50;
+//			w[i] = Math.random() * 50;
+//			k[i] = Math.random() * 50;
+//		}
 
 		// stochastic parameters
 		double[][][] eps = new double[numStation][numStation][numScenario];
+		
 		for (int i = 0; i < numStation; i++) {
 			for (int j = 0; j < numStation; j++) {
 				for (int s = 0; s < numScenario; s++) {
@@ -204,14 +208,16 @@ public class ResolutionCplex {
 				this.solution = cplex.getObjValue();
 				System.out.println("Time value = " + cplex.getCplexTime());
 				this.resolutionTime = cplex.getCplexTime();
+				this.iteratioNumber = cplex.getNiterations();
 
 				for (int i = 0; i < solVal.length; i++) {
 					for (int j = 0; j < solVal[i].length; j++) {
-						System.out.print("  " + solVal[i][j]);
+						System.out.println(varSol[i][j] + ":" + solVal[i][j] + " ");
 						solutions.put(varSol[i][j].getName(), "" + solVal[i][j]);
 					}
 					System.out.println();
 				}
+				System.out.println("Result : " + getResult());
 			}
 			cplex.end();
 
@@ -264,6 +270,48 @@ public class ResolutionCplex {
 	public String toString() {
 		return "ResolutionCplex [solutions=" + solutions + ", resolutionTime=" + resolutionTime + ", loadTime="
 				+ loadTime + ", solution=" + solution + ", statut=" + statut + "]";
+	}
+
+	@Override
+	public Map<String, String> VariableSolution() {
+		return getSolutions();
+	}
+
+	public int getIteratioNumber() {
+		return iteratioNumber;
+	}
+
+	public void setIteratioNumber(int iteratioNumber) {
+		this.iteratioNumber = iteratioNumber;
+	}
+
+	@Override
+	public String getResult() {
+		/*
+		 * (temps de résolution, statut de solution, temps de lecture, solution
+		 * optimale, nombre itérations)
+		 */
+		int min = (int) (getResolutionTime() / 60000000);
+		int sec = (int) ((getResolutionTime() % 60000000) / 1000000);
+		int mils = (int) (((getResolutionTime() % 60000000) % 1000000) / 1000);
+
+		return    "Temps de résolution : " + min + " minutes " + sec + " secondes " + mils + " mils" + "\n"
+				+ "Temps de chargement : " + getLoadTime() + "\n" 
+				+ "Statut de la solution " + getStatut() + "\n"
+				+ "Solution optimale : " + getSolution() + "\n"
+				+ "Nombre d'iterations : " + getIteratioNumber() 
+				+ "\n";
+	}
+	
+	
+	public static void main(String[] args) {
+		try {
+			Data.init("param.csv");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		ResolutionCplex cp = new ResolutionCplex();
+		cp.solve();
 	}
 
 }

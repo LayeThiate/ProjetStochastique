@@ -1,26 +1,32 @@
 package Controller;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
 
-import Model.*;
+import Model.Data;
+import Model.RecuitSup;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
 
 //import Model.Scenario;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Slider;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
+import view.ResolutionCplex;
 
 public class UIControlleur {
     //public RecuitGlobal recuitGlobal;
@@ -144,69 +150,113 @@ public class UIControlleur {
 			resetLabelResults();
 			tableView.setItems(null); //et on reset l'affichage du tableau
 			
-			//recuperation de toutes les donnees
-			//si aucun champ n'était vide (false), on peut lancer la résolution
-			if(getFonctionObj() && getSubConstraints() && getBoundaries()
-					&& getAllVariables() && getSliderTime() && getFileNameCSV()){
-				
+			//Lancer le cplex sur le model du projet
+			if(choixResolution.equals("deterministe") && getFileNameCSV()) {
 				//Initialisation des données
 				try {
 					Data.init(strFileNameCSV);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				Data.getInstance().setBoundaries(arrayListBoundaries);
-				Data.getInstance().setObjFunc(fonctionObjectif);
-				Data.getInstance().setVariables(getArrayListVariables());
-				Data.getInstance().setSubConstraints(getArrayListSubConstraints());
 				
-				//si choix == stochastique, résolution avec le recuit sup
-				if(choixResolution == "stochastique"){
-					RecuitSup recuitSup = new RecuitSup();
+				ResolutionCplex cplex = new ResolutionCplex();
+				cplex.solve();
+				
+				optiIntSolAndAvgSol = cplex.getResult();
+				String [] res = optiIntSolAndAvgSol.split("\n");
+				lblSolveTime.setText(res[0]);
+				lblReadTime.setText(res[1]);
+				lblSolStatus.setText(res[2]);
+				lblOptiIntSol.setText(res[3]);
+				lblNbIterations.setText(res[4]);
+				
+				columnVarName.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Map.Entry<String, String>, String>, ObservableValue<String>>() {
+		            @Override
+		            public ObservableValue<String> call(TableColumn.CellDataFeatures<Map.Entry<String, String>, String> p) {
+		                // ce callback retourne la propriete pour une seule cellule, pas de boucle possible ici
+		                // on utilise cle en premiere colonne
+		                return new SimpleStringProperty(p.getValue().getKey());
+		            }
+		        });
+				
+		        columnVarValue.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Map.Entry<String, String>, String>, ObservableValue<String>>() {
+		            @Override
+		            public ObservableValue<String> call(TableColumn.CellDataFeatures<Map.Entry<String, String>, String> p) {
+		                // on utilise valeur en seconde colonne
+		                return new SimpleStringProperty(p.getValue().getValue());
+		            }
+		        });
+				
+				Map<String, String> varSol = cplex.getSolutions();
+				ObservableList<Map.Entry<String, String>> items = FXCollections.observableArrayList(varSol.entrySet());
+		        tableView.setItems(items);
+				tableView.getColumns().setAll(columnVarName, columnVarValue);
+			}
+			else {
+			//recuperation de toutes les donnees
+			//si aucun champ n'était vide (false), on peut lancer la résolution
+				if(getFonctionObj() && getSubConstraints() && getBoundaries()
+						&& getAllVariables() && getSliderTime() && getFileNameCSV()){
+					
+					//Initialisation des données
 					try {
-						recuitSup.genererScenario(strFileNameCSV);
+						Data.init(strFileNameCSV);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-					recuitSup.data.timeLimit = Double.parseDouble(minutesSliderTime);
-					//récupération des résultats et mise à jour de l'IHM
-					optiIntSolAndAvgSol = recuitSup.replyToUI();
-					lblOptiIntSol.setText(optiIntSolAndAvgSol.split("\n")[0]);
-					lblAvgSol.setText(optiIntSolAndAvgSol.split("\n")[1]);
-				}
-				else{ // choix == déterministe
-					columnVarName.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Map.Entry<String, String>, String>, ObservableValue<String>>() {
-			            @Override
-			            public ObservableValue<String> call(TableColumn.CellDataFeatures<Map.Entry<String, String>, String> p) {
-			                // ce callback retourne la propriete pour une seule cellule, pas de boucle possible ici
-			                // on utilise cle en premiere colonne
-			                return new SimpleStringProperty(p.getValue().getKey());
-			            }
-			        });
+					Data.getInstance().setBoundaries(arrayListBoundaries);
+					Data.getInstance().setObjFunc(fonctionObjectif);
+					Data.getInstance().setVariables(getArrayListVariables());
+					Data.getInstance().setSubConstraints(getArrayListSubConstraints());
 					
-			        columnVarValue.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Map.Entry<String, String>, String>, ObservableValue<String>>() {
-			            @Override
-			            public ObservableValue<String> call(TableColumn.CellDataFeatures<Map.Entry<String, String>, String> p) {
-			                // on utilise valeur en seconde colonne
-			                return new SimpleStringProperty(p.getValue().getValue());
-			            }
-			        });
-
-			        //récupération des résultats de cplex
-			        //Hashmap hardcodée de test, à remplacer par la vraie HashMap retournée
-			        HashMap<String, String> hmMockData = new HashMap<String, String>();
-			        hmMockData.put("x1", "999");
-			        hmMockData.put("x2", "666");
-			        hmMockData.put("x3", "333");
-			        hmMockData.put("x4", "444");
-			        hmMockData.put("x5", "555");
-			        hmMockData.put("x6", "222");
-			        
-			        ObservableList<Map.Entry<String, String>> items = FXCollections.observableArrayList(hmMockData.entrySet());
-			        tableView.setItems(items);
-					tableView.getColumns().setAll(columnVarName, columnVarValue);
+					//si choix == stochastique, résolution avec le recuit sup
+					if(choixResolution == "stochastique"){
+						RecuitSup recuitSup = new RecuitSup();
+						try {
+							recuitSup.genererScenario(strFileNameCSV);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						recuitSup.data.timeLimit = Double.parseDouble(minutesSliderTime);
+						//récupération des résultats et mise à jour de l'IHM
+						optiIntSolAndAvgSol = recuitSup.replyToUI();
+						lblOptiIntSol.setText(optiIntSolAndAvgSol.split("\n")[0]);
+						lblAvgSol.setText(optiIntSolAndAvgSol.split("\n")[1]);
+					}
+					else{ // choix == déterministe
+						columnVarName.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Map.Entry<String, String>, String>, ObservableValue<String>>() {
+				            @Override
+				            public ObservableValue<String> call(TableColumn.CellDataFeatures<Map.Entry<String, String>, String> p) {
+				                // ce callback retourne la propriete pour une seule cellule, pas de boucle possible ici
+				                // on utilise cle en premiere colonne
+				                return new SimpleStringProperty(p.getValue().getKey());
+				            }
+				        });
+						
+				        columnVarValue.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Map.Entry<String, String>, String>, ObservableValue<String>>() {
+				            @Override
+				            public ObservableValue<String> call(TableColumn.CellDataFeatures<Map.Entry<String, String>, String> p) {
+				                // on utilise valeur en seconde colonne
+				                return new SimpleStringProperty(p.getValue().getValue());
+				            }
+				        });
+	
+				        //récupération des résultats de cplex
+				        //Hashmap hardcodée de test, à remplacer par la vraie HashMap retournée
+				        HashMap<String, String> hmMockData = new HashMap<String, String>();
+				        hmMockData.put("x1", "999");
+				        hmMockData.put("x2", "666");
+				        hmMockData.put("x3", "333");
+				        hmMockData.put("x4", "444");
+				        hmMockData.put("x5", "555");
+				        hmMockData.put("x6", "222");
+				        
+				        ObservableList<Map.Entry<String, String>> items = FXCollections.observableArrayList(hmMockData.entrySet());
+				        tableView.setItems(items);
+						tableView.getColumns().setAll(columnVarName, columnVarValue);
+					}
 				}
-			} // fin if tous les champs ont bien été récupéré
+			}// fin if tous les champs ont bien été récupéré
 			//A la fin, on nettoie après chaque clic sur le bouton de résolution
 			cleanseArrays();
          });
