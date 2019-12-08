@@ -112,7 +112,7 @@ public class RecuitSup {
     		this.resolution();
     	});
     	try {
-			future.get((long) data.timeLimit, TimeUnit.SECONDS);
+			future.get((long) data.timeLimit, TimeUnit.MINUTES);
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
