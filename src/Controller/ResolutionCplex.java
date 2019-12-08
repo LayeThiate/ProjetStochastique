@@ -1,9 +1,8 @@
-package view;
+package Controller;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import Controller.IResulsat;
 import Model.Data;
 import ilog.concert.IloException;
 import ilog.concert.IloLinearNumExpr;

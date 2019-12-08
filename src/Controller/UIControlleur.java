@@ -24,7 +24,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
-import view.ResolutionCplex;
 
 public class UIControlleur {
 	
