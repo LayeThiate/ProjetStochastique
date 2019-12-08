@@ -148,6 +148,21 @@ public class UIControlleur {
 			//si aucun champ n'était vide (false), on peut lancer la résolution
 			if(getFonctionObj() && getSubConstraints() && getBoundaries()
 					&& getAllVariables() && getSliderTime() && getFileNameCSV()){
+
+				
+				//Initialisation des données
+				try {
+					Data.init(strFileNameCSV);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				Data.getInstance().setBoundaries(arrayListBoundaries);
+				Data.getInstance().setObjFunc(fonctionObjectif);
+				Data.getInstance().setVariables(getArrayListVariables());
+				Data.getInstance().setSubConstraints(getArrayListSubConstraints());
+				
+				//envoi vers le recuit sup
+				//TODO
 				
 				//si choix == stochastique, résolution avec le recuit sup
 				if(choixResolution == "stochastique"){

@@ -34,6 +34,11 @@ public class Data {
 	private int[][][] eps = new int[numStation][numStation][numScenario]; // stochastic parameters
 	public double timeLimit = 10.0;
 	
+	private String objFunc;
+	private ArrayList<String> subConstraints = new ArrayList<String>();
+    private ArrayList<String> boundaries = new ArrayList<String>();
+    private ArrayList<String> variables = new ArrayList<String>();
+	
 	private static Data instance = null;
 	
 	//Default constructor
@@ -121,7 +126,7 @@ public class Data {
 			data.longitude[i] = new Float(str[11]);
 			
 			for(int j=0; j<list.size(); j++){
-				data.eps[i][j][0] = new Integer(str[12+j]);
+				data.eps[i][j][0] = new Integer(str[12]);
 			}
 		}
 		/*
@@ -297,23 +302,48 @@ public class Data {
 		this.id = id;
 	}
 
+	public String getObjFunc() {
+		return objFunc;
+	}
+
+	public void setObjFunc(String objFunc) {
+		this.objFunc = objFunc;
+	}
+
+	public ArrayList<String> getSubConstraints() {
+		return subConstraints;
+	}
+
+	public void setSubConstraints(ArrayList<String> subConstraints) {
+		this.subConstraints = subConstraints;
+	}
+
+	public ArrayList<String> getBoundaries() {
+		return boundaries;
+	}
+
+	public void setBoundaries(ArrayList<String> boundaries) {
+		this.boundaries = boundaries;
+	}
+
+	public ArrayList<String> getVariables() {
+		return variables;
+	}
+
+	public void setVariables(ArrayList<String> variables) {
+		this.variables = variables;
+	}
+
 	@Override
 	public String toString() {
-		String rslt = "Data [numStation=" + numStation + ", numScenario=" + numScenario + ", description="
-				+ Arrays.toString(description) + ", code=" + Arrays.toString(code) + ", disponible="
+		return "Data [objectif=" + objectif + ", numStation=" + numStation + ", numScenario=" + numScenario
+				+ ", description=" + Arrays.toString(description) + ", code=" + Arrays.toString(code) + ", disponible="
 				+ Arrays.toString(disponible) + ", nbPlaceDispo=" + Arrays.toString(nbPlaceDispo) + ", nbVeloInitial="
 				+ Arrays.toString(nbVeloInitial) + ", latitude=" + Arrays.toString(latitude) + ", longitude="
 				+ Arrays.toString(longitude) + ", id=" + Arrays.toString(id) + ", c=" + Arrays.toString(c) + ", v="
 				+ Arrays.toString(v) + ", w=" + Arrays.toString(w) + ", k=" + Arrays.toString(k) + ", eps="
-				/*+ Arrays.toString(eps) + "]"*/;
-		for(int i = 0; i < numStation; i++) {
-			rslt += "[";
-			for(int j = 0; j < numStation - 1; j++) {
-				rslt += eps[i][j][0] + ", ";
-			}
-			rslt += rslt += eps[i][numStation-1][0] + "]";
-		}
-		return rslt;
+				+ Arrays.toString(eps) + ", objFunc=" + objFunc + ", subConstraints=" + subConstraints + ", boundaries="
+				+ boundaries + ", variables=" + variables + "]";
 	}
 
 }
