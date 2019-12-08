@@ -148,7 +148,6 @@ public class UIControlleur {
 			//si aucun champ n'était vide (false), on peut lancer la résolution
 			if(getFonctionObj() && getSubConstraints() && getBoundaries()
 					&& getAllVariables() && getSliderTime() && getFileNameCSV()){
-
 				
 				//Initialisation des données
 				try {
@@ -161,9 +160,6 @@ public class UIControlleur {
 				Data.getInstance().setVariables(getArrayListVariables());
 				Data.getInstance().setSubConstraints(getArrayListSubConstraints());
 				
-				//envoi vers le recuit sup
-				//TODO
-				
 				//si choix == stochastique, résolution avec le recuit sup
 				if(choixResolution == "stochastique"){
 					RecuitSup recuitSup = new RecuitSup();
@@ -172,7 +168,7 @@ public class UIControlleur {
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-					recuitSup.data.timeLimit = solveTime;
+					recuitSup.data.timeLimit = Double.parseDouble(minutesSliderTime);
 					//récupération des résultats et mise à jour de l'IHM
 					optiIntSolAndAvgSol = recuitSup.replyToUI();
 					lblOptiIntSol.setText(optiIntSolAndAvgSol.split("\n")[0]);
@@ -196,6 +192,7 @@ public class UIControlleur {
 			            }
 			        });
 
+			        //récupération des résultats de cplex
 			        //Hashmap hardcodée de test, à remplacer par la vraie HashMap retournée
 			        HashMap<String, String> hmMockData = new HashMap<String, String>();
 			        hmMockData.put("x1", "999");
