@@ -11,8 +11,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-//import Model.Scenario;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -29,9 +27,6 @@ import javafx.util.Callback;
 import view.ResolutionCplex;
 
 public class UIControlleur {
-    //public RecuitGlobal recuitGlobal;
-    //public FonctionObjectif fonctionObjectif;
-    //public Scenario scenario;
 	
 	@FXML
 	private AnchorPane anchorPane;
@@ -150,7 +145,7 @@ public class UIControlleur {
 			resetLabelResults();
 			tableView.setItems(null); //et on reset l'affichage du tableau
 			
-			//Lancer le cplex sur le model du projet
+			//Lancer le cplex sur le modele du projet
 			if(choixResolution.equals("deterministe") && getFileNameCSV()) {
 				//Initialisation des données
 				try {
@@ -192,70 +187,35 @@ public class UIControlleur {
 		        tableView.setItems(items);
 				tableView.getColumns().setAll(columnVarName, columnVarValue);
 			}
-			else {
-			//recuperation de toutes les donnees
-			//si aucun champ n'était vide (false), on peut lancer la résolution
-				if(getFonctionObj() && getSubConstraints() && getBoundaries()
-						&& getAllVariables() && getSliderTime() && getFileNameCSV()){
-					
-					//Initialisation des données
-					try {
-						Data.init(strFileNameCSV);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-					Data.getInstance().setBoundaries(arrayListBoundaries);
-					Data.getInstance().setObjFunc(fonctionObjectif);
-					Data.getInstance().setVariables(getArrayListVariables());
-					Data.getInstance().setSubConstraints(getArrayListSubConstraints());
-					
-					//si choix == stochastique, résolution avec le recuit sup
-					if(choixResolution == "stochastique"){
-						RecuitSup recuitSup = new RecuitSup();
-						try {
-							recuitSup.genererScenario(strFileNameCSV);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-						recuitSup.data.timeLimit = Double.parseDouble(minutesSliderTime);
-						//récupération des résultats et mise à jour de l'IHM
-						optiIntSolAndAvgSol = recuitSup.replyToUI();
-						lblOptiIntSol.setText(optiIntSolAndAvgSol.split("\n")[0]);
-						lblAvgSol.setText(optiIntSolAndAvgSol.split("\n")[1]);
-					}
-					else{ // choix == déterministe
-						columnVarName.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Map.Entry<String, String>, String>, ObservableValue<String>>() {
-				            @Override
-				            public ObservableValue<String> call(TableColumn.CellDataFeatures<Map.Entry<String, String>, String> p) {
-				                // ce callback retourne la propriete pour une seule cellule, pas de boucle possible ici
-				                // on utilise cle en premiere colonne
-				                return new SimpleStringProperty(p.getValue().getKey());
-				            }
-				        });
-						
-				        columnVarValue.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Map.Entry<String, String>, String>, ObservableValue<String>>() {
-				            @Override
-				            public ObservableValue<String> call(TableColumn.CellDataFeatures<Map.Entry<String, String>, String> p) {
-				                // on utilise valeur en seconde colonne
-				                return new SimpleStringProperty(p.getValue().getValue());
-				            }
-				        });
+			else if((choixResolution == "stochastique") && getFonctionObj() && getSubConstraints() && getBoundaries()
+					&& getAllVariables() && getSliderTime() && getFileNameCSV()){
+				//recuperation de toutes les donnees
+				//si aucun champ n'était vide (false), on peut lancer la résolution
+				//si choix == stochastique, résolution avec le recuit sup
 	
-				        //récupération des résultats de cplex
-				        //Hashmap hardcodée de test, à remplacer par la vraie HashMap retournée
-				        HashMap<String, String> hmMockData = new HashMap<String, String>();
-				        hmMockData.put("x1", "999");
-				        hmMockData.put("x2", "666");
-				        hmMockData.put("x3", "333");
-				        hmMockData.put("x4", "444");
-				        hmMockData.put("x5", "555");
-				        hmMockData.put("x6", "222");
-				        
-				        ObservableList<Map.Entry<String, String>> items = FXCollections.observableArrayList(hmMockData.entrySet());
-				        tableView.setItems(items);
-						tableView.getColumns().setAll(columnVarName, columnVarValue);
-					}
+				//Initialisation des données
+				try {
+					Data.init(strFileNameCSV);
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
+				Data.getInstance().setBoundaries(arrayListBoundaries);
+				Data.getInstance().setObjFunc(fonctionObjectif);
+				Data.getInstance().setVariables(getArrayListVariables());
+				Data.getInstance().setSubConstraints(getArrayListSubConstraints());
+				
+				RecuitSup recuitSup = new RecuitSup();
+				try {
+					recuitSup.genererScenario(strFileNameCSV);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				recuitSup.data.timeLimit = Double.parseDouble(minutesSliderTime);
+				//récupération des résultats et mise à jour de l'IHM
+				optiIntSolAndAvgSol = recuitSup.replyToUI();
+				lblOptiIntSol.setText(optiIntSolAndAvgSol.split("\n")[0]);
+				lblAvgSol.setText(optiIntSolAndAvgSol.split("\n")[1]);
+				
 			}// fin if tous les champs ont bien été récupéré
 			//A la fin, on nettoie après chaque clic sur le bouton de résolution
 			cleanseArrays();
