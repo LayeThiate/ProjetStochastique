@@ -90,7 +90,7 @@ public class RecuitSup {
     			meilleureSolution = listSolution.get(i);
     		}
     	}
-    	return meilleureSolution;
+    	return -meilleureSolution;
     }
 
     public double getMoyenne() {
@@ -100,7 +100,7 @@ public class RecuitSup {
     	}
     	double rslt = 0;
     	for(int i =0 ; i<listSolution.size() ; i++)
-    		rslt += listSolution.get(i);
+    		rslt -= listSolution.get(i);
     	return rslt/listSolution.size();
     }
     

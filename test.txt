@@ -1,0 +1,11 @@
+minimize SUM(c1*x1) + SUM(p(i)*SUM(SUM(v(i)*Iminus(i,j,s)+w(i)*Ominus(i,s))))
+
+beta(i,j,s) = eps(i,j,s) - Iminus(i,j,s)
+Iplus(i,s) -SUM(Iminus(i,j,s)) = x1 - SUM(eps(i,j,s))
+Oplus(i,s) - Ominus(i,s) = k(i) - x(i) + SUM(beta(i,j,s) - SUM(beta(j,i,s))
+
+0 <= x1 <= k1
+
+x1
+k1
+c1

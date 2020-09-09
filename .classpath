@@ -12,6 +12,10 @@
 	<classpathentry kind="lib" path="C:/Program Files/dev/commons-lang3-3.6.jar"/>
 	<classpathentry kind="lib" path="C:/Program Files/dev/commons-logging-1.2.jar"/>
 	<classpathentry kind="lib" path="C:/Program Files/dev/commons-text-1.1.jar"/>
-	<classpathentry kind="lib" path="C:/Program Files/dev/cplex.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/dev/cplex.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:/Program Files/IBM/ILOG/CPLEX_Studio_Community129/cplex/bin/x64_win64"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
